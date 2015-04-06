@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F5D0C1B1AD24D5600DB7EA0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */; };
 		4FE7A63A1ACF9F2D000704FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6391ACF9F2D000704FC /* main.m */; };
 		4FE7A63D1ACF9F2D000704FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A63C1ACF9F2D000704FC /* AppDelegate.m */; };
 		4FE7A6401ACF9F2D000704FC /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A63F1ACF9F2D000704FC /* RootViewController.m */; };
-		4FE7A6431ACF9F2D000704FC /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6421ACF9F2D000704FC /* DataViewController.m */; };
 		4FE7A6461ACF9F2D000704FC /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6451ACF9F2D000704FC /* ModelController.m */; };
 		4FE7A6491ACF9F2D000704FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7A6471ACF9F2D000704FC /* Main.storyboard */; };
 		4FE7A64B1ACF9F2D000704FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7A64A1ACF9F2D000704FC /* Images.xcassets */; };
 		4FE7A64E1ACF9F2D000704FC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7A64C1ACF9F2D000704FC /* LaunchScreen.xib */; };
 		4FE7A65A1ACF9F2D000704FC /* ZQAccountBookTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6591ACF9F2D000704FC /* ZQAccountBookTests.m */; };
+		4FE7A6691ACFC83A000704FC /* ZQDetialVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6681ACFC83A000704FC /* ZQDetialVC.m */; };
+		4FE7A66F1ACFC8B4000704FC /* ZQStatisticsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A66E1ACFC8B4000704FC /* ZQStatisticsVC.m */; };
+		4FE7A6721ACFC8DD000704FC /* ZQMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6711ACFC8DD000704FC /* ZQMainVC.m */; };
+		4FE7A6751ACFC905000704FC /* ZQLoanVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6741ACFC905000704FC /* ZQLoanVC.m */; };
+		4FE7A6781ACFC927000704FC /* ZQIncomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6771ACFC927000704FC /* ZQIncomeVC.m */; };
+		4FE7A67B1ACFC942000704FC /* ZQOutlayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A67A1ACFC942000704FC /* ZQOutlayVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4FE7A6341ACF9F2D000704FC /* ZQAccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZQAccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE7A6381ACF9F2D000704FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FE7A6391ACF9F2D000704FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -36,8 +43,6 @@
 		4FE7A63C1ACF9F2D000704FC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4FE7A63E1ACF9F2D000704FC /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		4FE7A63F1ACF9F2D000704FC /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		4FE7A6411ACF9F2D000704FC /* DataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
-		4FE7A6421ACF9F2D000704FC /* DataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
 		4FE7A6441ACF9F2D000704FC /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
 		4FE7A6451ACF9F2D000704FC /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
 		4FE7A6481ACF9F2D000704FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,6 +51,18 @@
 		4FE7A6531ACF9F2D000704FC /* ZQAccountBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZQAccountBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE7A6581ACF9F2D000704FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FE7A6591ACF9F2D000704FC /* ZQAccountBookTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZQAccountBookTests.m; sourceTree = "<group>"; };
+		4FE7A6671ACFC83A000704FC /* ZQDetialVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQDetialVC.h; sourceTree = "<group>"; };
+		4FE7A6681ACFC83A000704FC /* ZQDetialVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQDetialVC.m; sourceTree = "<group>"; };
+		4FE7A66D1ACFC8B4000704FC /* ZQStatisticsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQStatisticsVC.h; sourceTree = "<group>"; };
+		4FE7A66E1ACFC8B4000704FC /* ZQStatisticsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQStatisticsVC.m; sourceTree = "<group>"; };
+		4FE7A6701ACFC8DD000704FC /* ZQMainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQMainVC.h; sourceTree = "<group>"; };
+		4FE7A6711ACFC8DD000704FC /* ZQMainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQMainVC.m; sourceTree = "<group>"; };
+		4FE7A6731ACFC905000704FC /* ZQLoanVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQLoanVC.h; sourceTree = "<group>"; };
+		4FE7A6741ACFC905000704FC /* ZQLoanVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQLoanVC.m; sourceTree = "<group>"; };
+		4FE7A6761ACFC927000704FC /* ZQIncomeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQIncomeVC.h; sourceTree = "<group>"; };
+		4FE7A6771ACFC927000704FC /* ZQIncomeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQIncomeVC.m; sourceTree = "<group>"; };
+		4FE7A6791ACFC942000704FC /* ZQOutlayVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQOutlayVC.h; sourceTree = "<group>"; };
+		4FE7A67A1ACFC942000704FC /* ZQOutlayVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQOutlayVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F5D0C1B1AD24D5600DB7EA0 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +87,7 @@
 		4FE7A62B1ACF9F2D000704FC = {
 			isa = PBXGroup;
 			children = (
+				4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */,
 				4FE7A6361ACF9F2D000704FC /* ZQAccountBook */,
 				4FE7A6561ACF9F2D000704FC /* ZQAccountBookTests */,
 				4FE7A6351ACF9F2D000704FC /* Products */,
@@ -87,12 +106,11 @@
 		4FE7A6361ACF9F2D000704FC /* ZQAccountBook */ = {
 			isa = PBXGroup;
 			children = (
+				4FE7A6631ACFC79C000704FC /* ViewControler */,
 				4FE7A63B1ACF9F2D000704FC /* AppDelegate.h */,
 				4FE7A63C1ACF9F2D000704FC /* AppDelegate.m */,
 				4FE7A63E1ACF9F2D000704FC /* RootViewController.h */,
 				4FE7A63F1ACF9F2D000704FC /* RootViewController.m */,
-				4FE7A6411ACF9F2D000704FC /* DataViewController.h */,
-				4FE7A6421ACF9F2D000704FC /* DataViewController.m */,
 				4FE7A6441ACF9F2D000704FC /* ModelController.h */,
 				4FE7A6451ACF9F2D000704FC /* ModelController.m */,
 				4FE7A6471ACF9F2D000704FC /* Main.storyboard */,
@@ -127,6 +145,25 @@
 				4FE7A6581ACF9F2D000704FC /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4FE7A6631ACFC79C000704FC /* ViewControler */ = {
+			isa = PBXGroup;
+			children = (
+				4FE7A6671ACFC83A000704FC /* ZQDetialVC.h */,
+				4FE7A6681ACFC83A000704FC /* ZQDetialVC.m */,
+				4FE7A66D1ACFC8B4000704FC /* ZQStatisticsVC.h */,
+				4FE7A66E1ACFC8B4000704FC /* ZQStatisticsVC.m */,
+				4FE7A6701ACFC8DD000704FC /* ZQMainVC.h */,
+				4FE7A6711ACFC8DD000704FC /* ZQMainVC.m */,
+				4FE7A6731ACFC905000704FC /* ZQLoanVC.h */,
+				4FE7A6741ACFC905000704FC /* ZQLoanVC.m */,
+				4FE7A6761ACFC927000704FC /* ZQIncomeVC.h */,
+				4FE7A6771ACFC927000704FC /* ZQIncomeVC.m */,
+				4FE7A6791ACFC942000704FC /* ZQOutlayVC.h */,
+				4FE7A67A1ACFC942000704FC /* ZQOutlayVC.m */,
+			);
+			path = ViewControler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,11 +266,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FE7A6431ACF9F2D000704FC /* DataViewController.m in Sources */,
 				4FE7A63D1ACF9F2D000704FC /* AppDelegate.m in Sources */,
+				4FE7A6781ACFC927000704FC /* ZQIncomeVC.m in Sources */,
+				4FE7A6691ACFC83A000704FC /* ZQDetialVC.m in Sources */,
 				4FE7A6461ACF9F2D000704FC /* ModelController.m in Sources */,
+				4FE7A6751ACFC905000704FC /* ZQLoanVC.m in Sources */,
 				4FE7A63A1ACF9F2D000704FC /* main.m in Sources */,
+				4FE7A6721ACFC8DD000704FC /* ZQMainVC.m in Sources */,
+				4FE7A66F1ACFC8B4000704FC /* ZQStatisticsVC.m in Sources */,
 				4FE7A6401ACF9F2D000704FC /* RootViewController.m in Sources */,
+				4FE7A67B1ACFC942000704FC /* ZQOutlayVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +466,7 @@
 				4FE7A65F1ACF9F2D000704FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4FE7A6601ACF9F2D000704FC /* Build configuration list for PBXNativeTarget "ZQAccountBookTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +475,7 @@
 				4FE7A6621ACF9F2D000704FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

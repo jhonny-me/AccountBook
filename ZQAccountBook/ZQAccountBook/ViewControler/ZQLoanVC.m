@@ -9,6 +9,15 @@
 #import "ZQLoanVC.h"
 
 @interface ZQLoanVC ()
+{
+    // tag
+    __weak IBOutlet UIButton *_borrowBtn;  //借入
+    __weak IBOutlet UIButton *_loanoutBtn; //借出
+    __weak IBOutlet UIButton *_repayBtn;   //还债
+    __weak IBOutlet UIButton *_collectBtn; //收债
+    
+    //
+}
 
 @end
 
@@ -17,11 +26,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    [self loadZQLoanVCUI];
+    [self loadZQLoanVCData];
+}
+
+
+- (void) loadZQLoanVCUI{
+    _borrowBtn.tag  = 1;
+    _loanoutBtn.tag = 2;
+    _repayBtn.tag   = 3;
+    _collectBtn.tag = 4;
+}
+
+- (void) loadZQLoanVCData{
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,15 +50,13 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 6;
 }
 
 /*
@@ -96,5 +112,29 @@
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark - TextField events
+
+- (IBAction)returnKey_Pressed:(id)sender {
+    [sender resignFirstResponder];
+}
+
+- (IBAction)beginEdit:(UITextField*)sender {
+//    sender.text = @"";
+    sender.textAlignment = UITextAlignmentLeft ;
+}
+
+
+#pragma mark - Button events
+- (IBAction)statusBtn_Pressed:(UIButton*)sender {
+    for (int i=1; i<5; i++) {
+        UIButton *button = [self.view viewWithTag:i];
+        if (i == sender.tag) {
+            button.backgroundColor = [UIColor darkGrayColor];
+        }
+        else{
+            button.backgroundColor = [UIColor lightGrayColor];
+        }
+    }
+}
 
 @end

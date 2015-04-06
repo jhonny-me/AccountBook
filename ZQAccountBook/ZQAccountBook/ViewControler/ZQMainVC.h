@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZQMainVC : UIViewController
+@interface ZQMainVC : UITableViewController
 
 @end
