@@ -12,13 +12,17 @@ NSString *categorys[] = {@"工资",@"兼职",@"理财收益",@"其他"};
 
 NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate>
+@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate>
 {
     __weak IBOutlet UITextField *_categoryTF;
+    __weak IBOutlet UITextField *_numberTF;
     
     __weak IBOutlet UITextField *_accountTF;
     __weak IBOutlet UITextField *_dateTF;
+    __weak IBOutlet UITextView *_remarkTextView;
+    __weak IBOutlet UILabel *_hintLb;
     UIDatePicker *_datePicker;
+    __weak IBOutlet UIButton *_cameraBtn;
 }
 
 @end
@@ -38,6 +42,16 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 - (void) loadZQIncomeVCUI
 {
+    NSDate *  senddate=[NSDate date];
+    
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    
+    [dateformatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    
+    NSString * currentTime=[dateformatter stringFromDate:senddate];
+    
+    _dateTF.text = currentTime;
+    
     [self customizeKeyboards];
 }
 
@@ -49,6 +63,18 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 #pragma mark - customizeKeyboards
 
 - (void) customizeKeyboards{
+    // for number
+    _numberTF.keyboardType = UIKeyboardTypeDecimalPad;
+    _numberTF.delegate = self;
+    
+    UIBarButtonItem *nextBtn = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn.tag = 1000;
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar.barStyle = UIBarStyleDefault;
+    toolBar.items = [NSArray arrayWithObjects: spaceItem, nextBtn, nil];
+    _numberTF.inputAccessoryView = toolBar;
+
     // For Category
     UIPickerView *categoryPicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 0, 320, 216)];
     [categoryPicker setDelegate: self];
@@ -56,13 +82,13 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     categoryPicker.tag = 991;
     _categoryTF.inputView = categoryPicker;
 
-    UIBarButtonItem *nextBtn = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
-    nextBtn.tag = 1001;
-    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
-    toolBar.barStyle = UIBarStyleDefault;
-    toolBar.items = [NSArray arrayWithObjects: spaceItem, nextBtn, nil];
-    _categoryTF.inputAccessoryView = toolBar;
+    UIBarButtonItem *nextBtn1 = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn1.tag = 1001;
+    UIBarButtonItem *spaceItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar1 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar1.barStyle = UIBarStyleDefault;
+    toolBar1.items = [NSArray arrayWithObjects: spaceItem1, nextBtn1, nil];
+    _categoryTF.inputAccessoryView = toolBar1;
     
     // For Account
     UIPickerView *accountPicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 0, 320, 216)];
@@ -91,6 +117,18 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     toolBar3.barStyle = UIBarStyleDefault;
     toolBar3.items = [NSArray arrayWithObjects: spaceItem3, nextBtn3, nil];
     _dateTF.inputAccessoryView = toolBar3;
+    
+    // for remark
+    _remarkTextView.delegate = self;
+    
+    UIBarButtonItem *nextBtn4 = [[UIBarButtonItem alloc] initWithTitle: @"完成" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn4.tag = 1004;
+    UIBarButtonItem *spaceItem4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar4 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar4.barStyle = UIBarStyleDefault;
+    toolBar4.items = [NSArray arrayWithObjects: spaceItem4, nextBtn4, nil];
+    _remarkTextView.inputAccessoryView = toolBar4;
+
 }
 
 #pragma mark - PickerView Delegate & Datasource
@@ -122,12 +160,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         
         _accountTF.text = accounts[row];
     }else{
-    
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yy-mm-dd hh:mm:ss"];
-        NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
-        
-        _dateTF.text = selectTime;
+
     }
 }
 
@@ -156,12 +189,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
             break;
         case 3:
         {
-//            _datePicker.hidden = NO;
-//            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//            [formatter setDateFormat:@"yy-mm-dd hh:mm:ss"];
-//            NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
-//
-//            _dateTF.text = selectTime;
+
         }
             break;
         default:
@@ -169,10 +197,43 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     }
 }
 
+#pragma mark - Private methods
+
+- (void)takePicture: (BOOL)isCamera
+{
+//    _selectedAvatarType = TIPRITEPHOTO;
+    
+    UIImagePickerController *picker = [UIImagePickerController new];
+    picker.delegate = self;
+    
+    if (isCamera) {
+        
+        if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+            
+//            [MPUtils showAlert: @"Camera isn't available."];
+            return;
+        }
+        
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    }
+    else {
+        
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [self presentViewController: picker animated: YES completion: nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
+    [_cameraBtn setImage:image forState:UIControlStateNormal];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
 #pragma mark - button events
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
-    if (sender.tag == 1001) {
+    if (sender.tag == 1000) {
+        [_categoryTF becomeFirstResponder];
+    }else if (sender.tag == 1001) {
       
   //      [_categoryTF resignFirstResponder];
         [_accountTF becomeFirstResponder];
@@ -180,12 +241,60 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         
    //     [_accountTF resignFirstResponder];
         [_dateTF becomeFirstResponder];
-    }else if ([sender isEqual: _dateTF]){
+    }else if (sender.tag == 1003){
         
         [_dateTF resignFirstResponder];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+        NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
+        
+        _dateTF.text = selectTime;
+    }else{
+    
+        [_remarkTextView resignFirstResponder];
+    }
+}
+- (IBAction)cameraBtn_Pressed:(id)sender {
+    [self takePicture:YES];
+}
+
+- (IBAction)saveBtn_Pressed:(id)sender {
+}
+
+#pragma mark - textfield Delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    if ([textField isEqual:_numberTF]) {
+        _numberTF.text = @"";
     }
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    
+    if ([textField isEqual:_numberTF]) {
+        if ([_numberTF.text isEqualToString:@""]) {
+            _numberTF.text = @"0.00";
+        }
+    }
+}
+
+#pragma mark - textView Delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    
+    _hintLb.hidden = YES;
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView{
+
+    [textView resignFirstResponder];
+    if ([textView.text isEqualToString:@""]) {
+        _hintLb.hidden = NO;
+    }
+}
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
