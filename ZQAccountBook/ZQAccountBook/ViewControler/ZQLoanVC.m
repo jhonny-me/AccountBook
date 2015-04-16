@@ -8,15 +8,29 @@
 
 #import "ZQLoanVC.h"
 
-@interface ZQLoanVC ()
+NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
+
+@interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate>
 {
+    __weak IBOutlet UITextField *_nameTF;
+    __weak IBOutlet UITextField *_numberTF;
+    
+    __weak IBOutlet UILabel *_moneycolorLb;
+    __weak IBOutlet UITextField *_accountTF;
+    __weak IBOutlet UITextField *_dateTF;
+    __weak IBOutlet UITextView *_remarkTextView;
+    __weak IBOutlet UILabel *_hintLb;
+    UIDatePicker *_datePicker;
+    __weak IBOutlet UIButton *_cameraBtn;
+
     // tag
     __weak IBOutlet UIButton *_borrowBtn;  //借入
     __weak IBOutlet UIButton *_loanoutBtn; //借出
     __weak IBOutlet UIButton *_repayBtn;   //还债
     __weak IBOutlet UIButton *_collectBtn; //收债
     
-    //
+    // 应收账款，应付账款
+    NSString *_getOrGive;
 }
 
 @end
@@ -26,16 +40,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self loadZQLoanVCUI];
     [self loadZQLoanVCData];
+    [self loadZQLoanVCUI];
 }
 
 
 - (void) loadZQLoanVCUI{
+    
     _borrowBtn.tag  = 1;
     _loanoutBtn.tag = 2;
     _repayBtn.tag   = 3;
     _collectBtn.tag = 4;
+    
+    [self showCurrentTime];
+    [self customizeKeyboards];
 }
 
 - (void) loadZQLoanVCData{
@@ -46,6 +64,101 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+#pragma mark - customizeKeyboards
+
+- (void) customizeKeyboards{
+    // for number
+    _numberTF.keyboardType = UIKeyboardTypeDecimalPad;
+    _numberTF.delegate = self;
+    
+    UIBarButtonItem *nextBtn = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn.tag = 1000;
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar.barStyle = UIBarStyleDefault;
+    toolBar.items = [NSArray arrayWithObjects: spaceItem, nextBtn, nil];
+    _numberTF.inputAccessoryView = toolBar;
+    
+    // For Name
+    
+    UIBarButtonItem *nextBtn1 = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn1.tag = 1001;
+    UIBarButtonItem *spaceItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar1 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar1.barStyle = UIBarStyleDefault;
+    toolBar1.items = [NSArray arrayWithObjects: spaceItem1, nextBtn1, nil];
+    _nameTF.inputAccessoryView = toolBar1;
+    
+    // For Account
+    UIPickerView *accountPicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 0, 320, 216)];
+    [accountPicker setDelegate: self];
+    [accountPicker setDataSource: self];
+    accountPicker.tag = 992;
+    _accountTF.inputView = accountPicker;
+    
+    UIBarButtonItem *nextBtn2 = [[UIBarButtonItem alloc] initWithTitle: @"下一项" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn2.tag = 1002;
+    UIBarButtonItem *spaceItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar2 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar2.barStyle = UIBarStyleDefault;
+    toolBar2.items = [NSArray arrayWithObjects: spaceItem2, nextBtn2, nil];
+    _accountTF.inputAccessoryView = toolBar2;
+    
+    //for date
+    _datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
+    _datePicker.tag = 993;
+    _dateTF.inputView = _datePicker;
+    
+    UIBarButtonItem *nextBtn3 = [[UIBarButtonItem alloc] initWithTitle: @"完成" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn3.tag = 1003;
+    UIBarButtonItem *spaceItem3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar3 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar3.barStyle = UIBarStyleDefault;
+    toolBar3.items = [NSArray arrayWithObjects: spaceItem3, nextBtn3, nil];
+    _dateTF.inputAccessoryView = toolBar3;
+    
+    // for remark
+    _remarkTextView.delegate = self;
+    
+    UIBarButtonItem *nextBtn4 = [[UIBarButtonItem alloc] initWithTitle: @"完成" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn4.tag = 1004;
+    UIBarButtonItem *spaceItem4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar4 = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar4.barStyle = UIBarStyleDefault;
+    toolBar4.items = [NSArray arrayWithObjects: spaceItem4, nextBtn4, nil];
+    _remarkTextView.inputAccessoryView = toolBar4;
+    
+}
+
+#pragma mark - PickerView Delegate & Datasource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 5;
+}
+
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return loanAccounts[row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSLog(@"PickerView - DidSelectRow at %ld, %ld", (long)component, (long)row);
+    
+        
+        _accountTF.text = loanAccounts[row];
+}
+
+
 
 #pragma mark - Table view data source
 
@@ -59,75 +172,93 @@
     return 6;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+#pragma mark - Private methods
+
+- (void) showCurrentTime{
     
-    // Configure the cell...
+    NSDate *  senddate=[NSDate date];
     
-    return cell;
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    
+    [dateformatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    
+    NSString * currentTime=[dateformatter stringFromDate:senddate];
+    
+    _dateTF.text = currentTime;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)takePicture: (BOOL)isCamera
+{
+    //    _selectedAvatarType = TIPRITEPHOTO;
+    
+    UIImagePickerController *picker = [UIImagePickerController new];
+    picker.delegate = self;
+    
+    if (isCamera) {
+        
+        if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+            
+            //            [MPUtils showAlert: @"Camera isn't available."];
+            return;
+        }
+        
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    }
+    else {
+        
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [self presentViewController: picker animated: YES completion: nil];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
+    [_cameraBtn setImage:image forState:UIControlStateNormal];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 #pragma mark - TextField events
 
-- (IBAction)returnKey_Pressed:(id)sender {
-    [sender resignFirstResponder];
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    if ([textField isEqual:_numberTF]) {
+        _numberTF.text = @"";
+    }
 }
 
-- (IBAction)beginEdit:(UITextField*)sender {
-//    sender.text = @"";
-    sender.textAlignment = UITextAlignmentLeft ;
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    
+    if ([textField isEqual:_numberTF]) {
+        if ([_numberTF.text isEqualToString:@""]) {
+            _numberTF.text = @"0.00";
+        }
+    }
 }
+
+#pragma mark - textView Delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    
+    _hintLb.hidden = YES;
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    
+    [textView resignFirstResponder];
+    if ([textView.text isEqualToString:@""]) {
+        _hintLb.hidden = NO;
+    }
+}
+
 
 
 #pragma mark - Button events
+
 - (IBAction)statusBtn_Pressed:(UIButton*)sender {
     for (int i=1; i<5; i++) {
-        UIButton *button = [self.view viewWithTag:i];
+        UIButton *button = (UIButton *)[self.view viewWithTag:i];
         if (i == sender.tag) {
             button.backgroundColor = [UIColor darkGrayColor];
         }
@@ -135,6 +266,51 @@
             button.backgroundColor = [UIColor lightGrayColor];
         }
     }
+    
+    if (sender.tag == 1 || sender.tag == 3) {
+    
+        _getOrGive = @"应付账款";
+        _moneycolorLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+        _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];;
+    }else{
+    
+        _getOrGive = @"应收帐款";
+        _moneycolorLb.textColor = [UIColor redColor];
+        _numberTF.textColor = [UIColor redColor];
+    }
 }
+
+- (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
+    if (sender.tag == 1000) {
+        [_nameTF becomeFirstResponder];
+    }else if (sender.tag == 1001) {
+        
+        //      [_categoryTF resignFirstResponder];
+        [_accountTF becomeFirstResponder];
+    }else if (sender.tag == 1002){
+        
+        //     [_accountTF resignFirstResponder];
+        [_dateTF becomeFirstResponder];
+    }else if (sender.tag == 1003){
+        
+        [_dateTF resignFirstResponder];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+        NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
+        
+        _dateTF.text = selectTime;
+    }else{
+        
+        [_remarkTextView resignFirstResponder];
+    }
+}
+- (IBAction)cameraBtn_Pressed:(id)sender {
+    [self takePicture:YES];
+}
+
+- (IBAction)saveBtn_Pressed:(id)sender {
+}
+
 
 @end
