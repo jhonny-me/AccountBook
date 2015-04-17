@@ -10,10 +10,10 @@
 #import "CoreData+MagicalRecord.h"
 #import "Information.h"
 
-@interface ZQDetialVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface ZQDetialVC ()
 {
-    NSArray *_infoArray;
-    UITableView *_tableView;
+    NSMutableArray *_infoArray;
+    
 }
 
 @end
@@ -23,28 +23,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self loadZQDetialVCUI];
+    
     [self loadZQDetialVCData];
+    [self loadZQDetialVCUI];
 }
 
 - (void) loadZQDetialVCUI
 {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _tableView.delegate = self;
-    _tableView.dataSource =self;
-    [self.view addSubview:_tableView];
+    [self.tableView setTableHeaderView:_detailHeaderCell];
+//    self.tableView.sectionHeaderHeight = 124.f ;
 }
 
 - (void) loadZQDetialVCData{
-    Information *info = [Information MR_createEntity];
-    info.photo = nil;
-    info.amount = [NSNumber numberWithFloat:10.00];
-    info.category = @"asd";
-    info.account = @"cash";
-    info.remark = @"lallala";
-    info.date = [[NSDate alloc]init];
     
-    _infoArray = [Information MR_findAll];
+ 
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    if (_infoArray.count) {
+        
+        [_infoArray removeAllObjects];
+    }
+    
+    _infoArray =[NSMutableArray arrayWithArray:[Information MR_findAll]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,19 +59,21 @@
 #pragma mark - tableView operation
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return _infoArray.count;
 }
 
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
-    Information *tmpInfo = _infoArray[0];
+    Information *tmpInfo = _infoArray[indexPath.row];
     cell.textLabel.text = tmpInfo.category;
     return cell;
 }
+
+#pragma mark - Private methods
+
+
 
 /*
 #pragma mark - Navigation

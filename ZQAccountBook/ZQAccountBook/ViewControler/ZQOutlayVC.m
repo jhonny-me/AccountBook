@@ -7,6 +7,9 @@
 //
 
 #import "ZQOutlayVC.h"
+#import "Information.h"
+#import "CoreData+MagicalRecord.h"
+#import "ZQUtils.h"
 
 NSString *outlayCategorys[] = {@"服饰",@"餐饮",@"居家",@"交通",@"其他"};
 
@@ -44,7 +47,7 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
 - (void) loadZQOutlayVCUI
 {
     
-    [self showCurrentTime];
+    _dateTF.text = [self stringFromDate:[NSDate date]];
     [self customizeKeyboards];
 }
 
@@ -54,20 +57,6 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Private methods
-
-- (void) showCurrentTime{
-
-    NSDate *  senddate=[NSDate date];
-    
-    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-    
-    [dateformatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    
-    NSString * currentTime=[dateformatter stringFromDate:senddate];
-    
-    _dateTF.text = currentTime;
-}
 
 #pragma mark - customizeKeyboards
 
@@ -238,6 +227,25 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
     [_cameraBtn setImage:image forState:UIControlStateNormal];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (NSDate *)dateFromString:(NSString *)dateString{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyy-MM-dd hh:mm:ss"];
+    
+    NSDate *destDate= [dateFormatter dateFromString:dateString];
+    
+    return destDate;
+}
+
+- (NSString *) stringFromDate:(NSDate*)fromDate{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *destString = [NSString stringWithString:[formatter stringFromDate:fromDate]];
+    return destString;
+}
 #pragma mark - button events
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
@@ -255,11 +263,7 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         
         [_dateTF resignFirstResponder];
         
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-        NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
-        
-        _dateTF.text = selectTime;
+        _dateTF.text = [self stringFromDate:[_datePicker date]];
     }else{
         
         [_remarkTextView resignFirstResponder];
@@ -270,6 +274,35 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
 }
 
 - (IBAction)saveBtn_Pressed:(id)sender {
+    
+    if (_numberTF.text.floatValue == 0.0) {
+        // alart view
+        [ZQUtils showAlert:@"请输入金额！！"];
+        return;
+    }
+    Information *info = [Information MR_createEntity];
+    info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
+    info.photo     = _cameraBtn.imageView.image;
+    info.category  = _categoryTF.text;
+    info.account   = _accountTF.text;
+    info.date      = [self dateFromString:_dateTF.text];
+    info.remark    = _remarkTextView.text;
+    info.name      = @"";
+    info.type      = @"支出";
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"保存成功"];
+            }else{
+                
+                [ZQUtils showAlert:@"保存失败，请重试"];
+            }
+        }
+    }];
 }
 
 #pragma mark - textfield Delegate

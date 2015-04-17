@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EAC7DEE6-BF39-46A0-B7FF-18E2A3A84FBF</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ZQAccountBook</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C24D10C82A96A0E79D6629B9B25D44ABB46FDB92</key>
+		<string>https://github.com/jhonny-me/AccountBook.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ZQAccountBook/ZQAccountBook.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C24D10C82A96A0E79D6629B9B25D44ABB46FDB92</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/jhonny-me/AccountBook.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C24D10C82A96A0E79D6629B9B25D44ABB46FDB92</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C24D10C82A96A0E79D6629B9B25D44ABB46FDB92</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AccountBook</string>
+		</dict>
+	</array>
+</dict>
+</plist>

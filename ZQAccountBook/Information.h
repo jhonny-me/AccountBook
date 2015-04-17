@@ -18,5 +18,7 @@
 @property (nonatomic, retain) NSString * account;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSString * remark;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * type;
 
 @end

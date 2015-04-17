@@ -7,6 +7,9 @@
 //
 
 #import "ZQLoanVC.h"
+#import "Information.h"
+#import "CoreData+MagicalRecord.h"
+#import "ZQUtils.h"
 
 NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
@@ -52,7 +55,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     _repayBtn.tag   = 3;
     _collectBtn.tag = 4;
     
-    [self showCurrentTime];
+    _dateTF.text = [self stringFromDate:[NSDate date]];
     [self customizeKeyboards];
 }
 
@@ -187,6 +190,25 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     _dateTF.text = currentTime;
 }
 
+- (NSDate *)dateFromString:(NSString *)dateString{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyy-MM-dd hh:mm:ss"];
+    
+    NSDate *destDate= [dateFormatter dateFromString:dateString];
+    
+    return destDate;
+}
+
+- (NSString *) stringFromDate:(NSDate*)fromDate{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *destString = [NSString stringWithString:[formatter stringFromDate:fromDate]];
+    return destString;
+}
+
 - (void)takePicture: (BOOL)isCamera
 {
     //    _selectedAvatarType = TIPRITEPHOTO;
@@ -295,11 +317,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         
         [_dateTF resignFirstResponder];
         
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-        NSString *selectTime = [NSString stringWithString:[formatter stringFromDate:[_datePicker date]]];
-        
-        _dateTF.text = selectTime;
+        _dateTF.text = [self stringFromDate:[_datePicker date]];
     }else{
         
         [_remarkTextView resignFirstResponder];
@@ -310,6 +328,39 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 }
 
 - (IBAction)saveBtn_Pressed:(id)sender {
+    
+    if (_numberTF.text.floatValue == 0.0) {
+        // alart view
+        [ZQUtils showAlert:@"请输入金额！！"];
+        return;
+    }
+    if ([_nameTF.text isEqualToString:@""]) {
+        [ZQUtils showAlert:@"请输入借贷人姓名！"];
+        return;
+    }
+    Information *info = [Information MR_createEntity];
+    info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
+    info.photo     = _cameraBtn.imageView.image;
+    info.category  = _getOrGive;
+    info.account   = _accountTF.text;
+    info.date      = [self dateFromString:_dateTF.text];
+    info.remark    = _remarkTextView.text;
+    info.name      = _nameTF.text;
+    info.type      = @"借贷";
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"保存成功"];
+            }else{
+                
+                [ZQUtils showAlert:@"保存失败，请重试"];
+            }
+        }
+    }];
 }
 
 
