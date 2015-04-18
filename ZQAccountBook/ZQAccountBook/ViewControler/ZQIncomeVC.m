@@ -45,7 +45,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 - (void) loadZQIncomeVCUI
 {
-    _dateTF.text = [self stringFromDate:[NSDate date]];
+    _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
     
     [self customizeKeyboards];
 }
@@ -224,24 +224,6 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (NSDate *)dateFromString:(NSString *)dateString{
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat: @"yyyy-MM-dd hh:mm:ss"];
-    
-    NSDate *destDate= [dateFormatter dateFromString:dateString];
-    
-    return destDate;
-}
-
-- (NSString *) stringFromDate:(NSDate*)fromDate{
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    NSString *destString = [NSString stringWithString:[formatter stringFromDate:fromDate]];
-    return destString;
-}
 #pragma mark - button events
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
@@ -259,7 +241,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         
         [_dateTF resignFirstResponder];
         
-        _dateTF.text = [self stringFromDate:[_datePicker date]];
+        _dateTF.text = [ZQUtils stringFromDate:[_datePicker date]];
     }else{
     
         [_remarkTextView resignFirstResponder];
@@ -281,7 +263,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _categoryTF.text;
     info.account   = _accountTF.text;
-    info.date      = [self dateFromString:_dateTF.text];
+    info.date      = [ZQUtils dateFromString:_dateTF.text];
     info.remark    = _remarkTextView.text;
     info.name      = @"";
     info.type      = @"收入";

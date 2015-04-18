@@ -13,5 +13,7 @@
 #pragma mark - Alert
 
 + (void)showAlert: (NSString*)message;
++ (NSString *) stringFromDate:(NSDate*)fromDate;
++ (NSDate *)dateFromString:(NSString *)dateString;
 
 @end

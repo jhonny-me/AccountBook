@@ -19,4 +19,23 @@
     [alertV show];
 }
 
++ (NSDate *)dateFromString:(NSString *)dateString{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyy-MM-dd hh:mm:ss"];
+    
+    NSDate *destDate= [dateFormatter dateFromString:dateString];
+    
+    return destDate;
+}
+
++ (NSString *) stringFromDate:(NSDate*)fromDate{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *destString = [NSString stringWithString:[formatter stringFromDate:fromDate]];
+    return destString;
+}
+
 @end

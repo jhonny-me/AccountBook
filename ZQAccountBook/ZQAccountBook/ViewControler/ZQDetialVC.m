@@ -9,11 +9,12 @@
 #import "ZQDetialVC.h"
 #import "CoreData+MagicalRecord.h"
 #import "Information.h"
+#import "ZQUtils.h"
 
 @interface ZQDetialVC ()
 {
-    NSMutableArray *_infoArray;
-    
+    NSMutableArray *_infoMonthlyArray;
+    NSDictionary *_sortByMonthInArray;
 }
 
 @end
@@ -36,19 +37,14 @@
 
 - (void) loadZQDetialVCData{
     
- 
+    _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_findAllSortedBy:@"date" ascending:YES]];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
     
-    if (_infoArray.count) {
-        
-        [_infoArray removeAllObjects];
-    }
-    
-    _infoArray =[NSMutableArray arrayWithArray:[Information MR_findAll]];
+   
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,15 +55,15 @@
 #pragma mark - tableView operation
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _infoArray.count;
+    return _infoMonthlyArray.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
-    Information *tmpInfo = _infoArray[indexPath.row];
-    cell.textLabel.text = tmpInfo.category;
+    Information *tmpInfo = _infoMonthlyArray[indexPath.row];
+    cell.textLabel.text = [ZQUtils stringFromDate:tmpInfo.date];
     return cell;
 }
 

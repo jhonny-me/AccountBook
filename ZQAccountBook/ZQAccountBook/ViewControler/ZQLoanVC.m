@@ -55,7 +55,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     _repayBtn.tag   = 3;
     _collectBtn.tag = 4;
     
-    _dateTF.text = [self stringFromDate:[NSDate date]];
+    _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
     [self customizeKeyboards];
 }
 
@@ -177,38 +177,6 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 #pragma mark - Private methods
 
-- (void) showCurrentTime{
-    
-    NSDate *  senddate=[NSDate date];
-    
-    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-    
-    [dateformatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    
-    NSString * currentTime=[dateformatter stringFromDate:senddate];
-    
-    _dateTF.text = currentTime;
-}
-
-- (NSDate *)dateFromString:(NSString *)dateString{
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat: @"yyyy-MM-dd hh:mm:ss"];
-    
-    NSDate *destDate= [dateFormatter dateFromString:dateString];
-    
-    return destDate;
-}
-
-- (NSString *) stringFromDate:(NSDate*)fromDate{
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    NSString *destString = [NSString stringWithString:[formatter stringFromDate:fromDate]];
-    return destString;
-}
-
 - (void)takePicture: (BOOL)isCamera
 {
     //    _selectedAvatarType = TIPRITEPHOTO;
@@ -317,7 +285,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         
         [_dateTF resignFirstResponder];
         
-        _dateTF.text = [self stringFromDate:[_datePicker date]];
+        _dateTF.text = [ZQUtils stringFromDate:[_datePicker date]];
     }else{
         
         [_remarkTextView resignFirstResponder];
@@ -343,7 +311,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _getOrGive;
     info.account   = _accountTF.text;
-    info.date      = [self dateFromString:_dateTF.text];
+    info.date      = [ZQUtils dateFromString:_dateTF.text];
     info.remark    = _remarkTextView.text;
     info.name      = _nameTF.text;
     info.type      = @"借贷";
