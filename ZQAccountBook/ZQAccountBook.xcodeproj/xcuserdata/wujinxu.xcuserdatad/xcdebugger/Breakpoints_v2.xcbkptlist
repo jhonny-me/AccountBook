@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZQAccountBook/ViewControler/ZQDetialVC.m"
-            timestampString = "451125158.1121"
+            timestampString = "451147637.82398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "-loadZQDetialVCData"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ZQAccountBook/ViewControler/ZQDetialVC.m"
-            timestampString = "451126000.463475"
+            filePath = "ZQAccountBook/models/ZQInformation.m"
+            timestampString = "451150851.715362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-loadDataBaseInformationStatistics"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

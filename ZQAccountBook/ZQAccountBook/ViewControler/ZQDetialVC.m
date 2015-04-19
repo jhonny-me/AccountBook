@@ -39,26 +39,6 @@
 - (void) loadZQDetialVCData{
     
     _sortByMonthInArray = [[NSMutableDictionary alloc]init];
-    for (int i=1; i<13; i++) {
-        NSString *predicateStr;
-        NSMutableArray *_infoMonthlyArray;
-        if (i<10) {
-            
-            predicateStr = [NSString stringWithFormat:@"2015-0%d*",i];
-        }else{
-        
-            predicateStr = [NSString stringWithFormat:@"2015-%d*",i];
-        }
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
-        [_infoMonthlyArray removeAllObjects];
-        _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
-        
-        NSString *key = [NSString stringWithFormat:@"%d月",i];
-        [_sortByMonthInArray setObject:[_infoMonthlyArray mutableCopy] forKey:key];
-    }
-    if (_sortByMonthInArray) {
-        
-    }
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -110,7 +90,30 @@
 
 #pragma mark - Private methods
 
+- (void) loadDataBaseStatistics{
 
+    for (int i=1; i<13; i++) {
+        NSString *predicateStr;
+        NSMutableArray *_infoMonthlyArray;
+        if (i<10) {
+            
+            predicateStr = [NSString stringWithFormat:@"2015-0%d*",i];
+        }else{
+            
+            predicateStr = [NSString stringWithFormat:@"2015-%d*",i];
+        }
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
+        [_infoMonthlyArray removeAllObjects];
+        _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
+        
+        NSString *key = [NSString stringWithFormat:@"%d月",i];
+        [_sortByMonthInArray setObject:[_infoMonthlyArray mutableCopy] forKey:key];
+    }
+    if (_sortByMonthInArray) {
+        
+    }
+
+}
 
 /*
 #pragma mark - Navigation

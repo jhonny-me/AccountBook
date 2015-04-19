@@ -7,6 +7,7 @@
 //
 
 #import "ZQMainVC.h"
+#import "ZQInformation.h"
 
 @interface ZQMainVC ()
 
@@ -17,6 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    ZQInformation *info = [ZQInformation Info];
+    // 用count ＝＝0 来判断
+//    if ([info.sortByMonthInArray objectForKey:@"2"] == nil) {
+//        NSLog(@"ugghgdhsdsgdhsd");
+//    }
+//    if ([(NSArray*)[info.sortByMonthInArray objectForKey:@"2"] count] == 0) {
+//        NSLog(@"yyyyyyy");
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
