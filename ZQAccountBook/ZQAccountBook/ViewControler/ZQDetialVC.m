@@ -10,6 +10,7 @@
 #import "CoreData+MagicalRecord.h"
 #import "Information.h"
 #import "ZQUtils.h"
+#import "ZQDetailSectionRowCell.h"
 
 @interface ZQDetialVC ()
 {
@@ -82,10 +83,28 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
+    //UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
+    
+
+    ZQDetailSectionRowCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ZQDetailSectionRowCell"];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ZQDetailSectionRowCell" owner:nil options:nil] lastObject];
+    }
     NSArray *monthArray = [NSArray arrayWithArray:[_sortByMonthInArray objectForKey:@"4月"]];
     Information *tmpInfo = monthArray[indexPath.row];
-    cell.textLabel.text = tmpInfo.date;
+    cell.dateLb.text = [[tmpInfo.date substringWithRange:NSMakeRange(8, 2)] stringByAppendingString:@"号"];
+    cell.categoryLb.text = tmpInfo.category;
+    if ([tmpInfo.type isEqualToString:@"支出"]) {
+    
+        cell.amountLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+        
+        cell.amountLb.text = [NSString stringWithFormat:@"-%@",tmpInfo.amount];
+    }else{
+    
+        cell.amountLb.textColor = [UIColor redColor];
+        cell.amountLb.text = [NSString stringWithFormat:@"%@",tmpInfo.amount];
+    }
+    
     return cell;
 }
 

@@ -11,6 +11,7 @@
 #import "CoreData+MagicalRecord.h"
 #import "ZQUtils.h"
 
+
 NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
 @interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate>
@@ -261,7 +262,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     
         _getOrGive = @"应付账款";
         _moneycolorLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
-        _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];;
+        _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
     }else{
     
         _getOrGive = @"应收帐款";

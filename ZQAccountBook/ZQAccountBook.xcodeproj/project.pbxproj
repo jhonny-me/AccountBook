@@ -38,6 +38,8 @@
 		4F5D16661AD276D600DB7EA0 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D16471AD276D600DB7EA0 /* MagicalRecord.m */; };
 		4F5D16691AD2771E00DB7EA0 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D16671AD2771E00DB7EA0 /* Model.xcdatamodeld */; };
 		4F5D166C1AD277BD00DB7EA0 /* Information.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D166B1AD277BD00DB7EA0 /* Information.m */; };
+		4F628E6B1AE3A15C00331A17 /* ZQDetailSectionRowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F628E691AE3A15C00331A17 /* ZQDetailSectionRowCell.m */; };
+		4F628E6C1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F628E6A1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib */; };
 		4FE7A63A1ACF9F2D000704FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6391ACF9F2D000704FC /* main.m */; };
 		4FE7A63D1ACF9F2D000704FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A63C1ACF9F2D000704FC /* AppDelegate.m */; };
 		4FE7A6401ACF9F2D000704FC /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A63F1ACF9F2D000704FC /* RootViewController.m */; };
@@ -130,6 +132,9 @@
 		4F5D16681AD2771E00DB7EA0 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		4F5D166A1AD277BD00DB7EA0 /* Information.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Information.h; sourceTree = "<group>"; };
 		4F5D166B1AD277BD00DB7EA0 /* Information.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Information.m; sourceTree = "<group>"; };
+		4F628E681AE3A15C00331A17 /* ZQDetailSectionRowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZQDetailSectionRowCell.h; path = ZQAccountBook/ViewControler/ZQDetailSectionRowCell.h; sourceTree = SOURCE_ROOT; };
+		4F628E691AE3A15C00331A17 /* ZQDetailSectionRowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZQDetailSectionRowCell.m; path = ZQAccountBook/ViewControler/ZQDetailSectionRowCell.m; sourceTree = SOURCE_ROOT; };
+		4F628E6A1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ZQDetailSectionRowCell.xib; path = ZQAccountBook/ViewControler/ZQDetailSectionRowCell.xib; sourceTree = SOURCE_ROOT; };
 		4FE7A6341ACF9F2D000704FC /* ZQAccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZQAccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE7A6381ACF9F2D000704FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FE7A6391ACF9F2D000704FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -285,6 +290,16 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		4F628E5A1AE3818800331A17 /* ZQDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				4F628E681AE3A15C00331A17 /* ZQDetailSectionRowCell.h */,
+				4F628E691AE3A15C00331A17 /* ZQDetailSectionRowCell.m */,
+				4F628E6A1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib */,
+			);
+			path = ZQDetailView;
+			sourceTree = "<group>";
+		};
 		4FE7A62B1ACF9F2D000704FC = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +373,7 @@
 		4FE7A6631ACFC79C000704FC /* ViewControler */ = {
 			isa = PBXGroup;
 			children = (
+				4F628E5A1AE3818800331A17 /* ZQDetailView */,
 				4FE7A6671ACFC83A000704FC /* ZQDetialVC.h */,
 				4FE7A6681ACFC83A000704FC /* ZQDetialVC.m */,
 				4FE7A66D1ACFC8B4000704FC /* ZQStatisticsVC.h */,
@@ -466,6 +482,7 @@
 			files = (
 				4FE7A6491ACF9F2D000704FC /* Main.storyboard in Resources */,
 				4FE7A64E1ACF9F2D000704FC /* LaunchScreen.xib in Resources */,
+				4F628E6C1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib in Resources */,
 				4FE7A64B1ACF9F2D000704FC /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,6 +529,7 @@
 				4F5D16561AD276D600DB7EA0 /* NSManagedObject+MagicalRecord.m in Sources */,
 				4F5D16591AD276D600DB7EA0 /* NSManagedObjectContext+MagicalObserving.m in Sources */,
 				4F5D16541AD276D600DB7EA0 /* NSManagedObject+MagicalDataImport.m in Sources */,
+				4F628E6B1AE3A15C00331A17 /* ZQDetailSectionRowCell.m in Sources */,
 				4F5D16521AD276D600DB7EA0 /* NSString+MagicalDataImport.m in Sources */,
 				4F5D164E1AD276D600DB7EA0 /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				4F5D16651AD276D600DB7EA0 /* MagicalRecord+ShorthandSupport.m in Sources */,
