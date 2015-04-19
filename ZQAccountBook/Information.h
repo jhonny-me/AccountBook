@@ -16,9 +16,9 @@
 @property (nonatomic, retain) NSNumber * amount;
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSString * account;
-@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSString * date;
 @property (nonatomic, retain) NSString * remark;
-@property (nonatomic, retain) NSString * name;
+//@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * type;
 
 @end

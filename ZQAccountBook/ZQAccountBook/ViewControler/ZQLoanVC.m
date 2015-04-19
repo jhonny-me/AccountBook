@@ -7,7 +7,7 @@
 //
 
 #import "ZQLoanVC.h"
-#import "Information.h"
+#import "LoanInfo.h"
 #import "CoreData+MagicalRecord.h"
 #import "ZQUtils.h"
 
@@ -306,15 +306,15 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         [ZQUtils showAlert:@"请输入借贷人姓名！"];
         return;
     }
-    Information *info = [Information MR_createEntity];
+    LoanInfo *info = [LoanInfo MR_createEntity];
     info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _getOrGive;
     info.account   = _accountTF.text;
-    info.date      = [ZQUtils dateFromString:_dateTF.text];
+    info.date      = _dateTF.text;
     info.remark    = _remarkTextView.text;
     info.name      = _nameTF.text;
-    info.type      = @"借贷";
+//    info.type      = @"借贷";
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
         if(error)
         {

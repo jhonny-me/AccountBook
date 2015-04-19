@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0502971AE2664A001F8E3F /* LoanInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0502961AE2664A001F8E3F /* LoanInfo.m */; };
 		4F5D0C1B1AD24D5600DB7EA0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */; };
 		4F5D164C1AD276D600DB7EA0 /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D16101AD276D600DB7EA0 /* MagicalImportFunctions.m */; };
 		4F5D164D1AD276D600DB7EA0 /* NSAttributeDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D16121AD276D600DB7EA0 /* NSAttributeDescription+MagicalDataImport.m */; };
@@ -65,6 +66,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F0502951AE2664A001F8E3F /* LoanInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanInfo.h; sourceTree = "<group>"; };
+		4F0502961AE2664A001F8E3F /* LoanInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanInfo.m; sourceTree = "<group>"; };
 		4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4F5D160F1AD276D600DB7EA0 /* MagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalImportFunctions.h; sourceTree = "<group>"; };
 		4F5D16101AD276D600DB7EA0 /* MagicalImportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagicalImportFunctions.m; sourceTree = "<group>"; };
@@ -286,6 +289,8 @@
 			isa = PBXGroup;
 			children = (
 				4F5D16671AD2771E00DB7EA0 /* Model.xcdatamodeld */,
+				4F0502951AE2664A001F8E3F /* LoanInfo.h */,
+				4F0502961AE2664A001F8E3F /* LoanInfo.m */,
 				4F5D166A1AD277BD00DB7EA0 /* Information.h */,
 				4F5D166B1AD277BD00DB7EA0 /* Information.m */,
 				4F5D0C1A1AD24D5500DB7EA0 /* CoreData.framework */,
@@ -510,6 +515,7 @@
 				4F5D16521AD276D600DB7EA0 /* NSString+MagicalDataImport.m in Sources */,
 				4F5D164E1AD276D600DB7EA0 /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				4F5D16651AD276D600DB7EA0 /* MagicalRecord+ShorthandSupport.m in Sources */,
+				4F0502971AE2664A001F8E3F /* LoanInfo.m in Sources */,
 				4F5D16571AD276D600DB7EA0 /* NSManagedObject+MagicalRequests.m in Sources */,
 				4F5D165E1AD276D600DB7EA0 /* NSPersistentStore+MagicalRecord.m in Sources */,
 				4FE7A66F1ACFC8B4000704FC /* ZQStatisticsVC.m in Sources */,

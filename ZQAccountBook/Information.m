@@ -17,7 +17,7 @@
 @dynamic account;
 @dynamic date;
 @dynamic remark;
-@dynamic name;
+//@dynamic name;
 @dynamic type;
 
 @end

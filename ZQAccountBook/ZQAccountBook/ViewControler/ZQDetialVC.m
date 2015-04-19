@@ -13,8 +13,8 @@
 
 @interface ZQDetialVC ()
 {
-    NSMutableArray *_infoMonthlyArray;
-    NSDictionary *_sortByMonthInArray;
+   
+    NSMutableDictionary *_sortByMonthInArray;
 }
 
 @end
@@ -37,7 +37,27 @@
 
 - (void) loadZQDetialVCData{
     
-    _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_findAllSortedBy:@"date" ascending:YES]];
+    _sortByMonthInArray = [[NSMutableDictionary alloc]init];
+    for (int i=1; i<13; i++) {
+        NSString *predicateStr;
+        NSMutableArray *_infoMonthlyArray;
+        if (i<10) {
+            
+            predicateStr = [NSString stringWithFormat:@"2015-0%d*",i];
+        }else{
+        
+            predicateStr = [NSString stringWithFormat:@"2015-%d*",i];
+        }
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
+        [_infoMonthlyArray removeAllObjects];
+        _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
+        
+        NSString *key = [NSString stringWithFormat:@"%d月",i];
+        [_sortByMonthInArray setObject:[_infoMonthlyArray mutableCopy] forKey:key];
+    }
+    if (_sortByMonthInArray) {
+        
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -55,15 +75,17 @@
 #pragma mark - tableView operation
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _infoMonthlyArray.count;
+    NSArray *monthArray = [NSArray arrayWithArray:[_sortByMonthInArray objectForKey:@"4月"]];
+    return monthArray.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
-    Information *tmpInfo = _infoMonthlyArray[indexPath.row];
-    cell.textLabel.text = [ZQUtils stringFromDate:tmpInfo.date];
+    NSArray *monthArray = [NSArray arrayWithArray:[_sortByMonthInArray objectForKey:@"4月"]];
+    Information *tmpInfo = monthArray[indexPath.row];
+    cell.textLabel.text = tmpInfo.date;
     return cell;
 }
 

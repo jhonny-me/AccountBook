@@ -263,9 +263,9 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _categoryTF.text;
     info.account   = _accountTF.text;
-    info.date      = [ZQUtils dateFromString:_dateTF.text];
+    info.date      = _dateTF.text;
     info.remark    = _remarkTextView.text;
-    info.name      = @"";
+//    info.name      = @"";
     info.type      = @"收入";
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
         if(error)
