@@ -15,7 +15,7 @@
     __weak IBOutlet UILabel *_headSurplusLb;
     __weak IBOutlet UILabel *_headIncomeLb;
     __weak IBOutlet UILabel *_headOutlayLb;
-    IBOutlet UITableViewCell *_detailHeaderCell;
+    IBOutlet UIView *_headerView;
 }
 
 @end

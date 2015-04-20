@@ -38,7 +38,7 @@
 
 - (void) loadZQDetialVCUI
 {
-    [self.tableView setTableHeaderView:_detailHeaderCell];
+    [self.tableView setTableHeaderView:_headerView];
     
     _headYearLb.text = [ZQUtils getCurrentYearAndMonth];
     _headIncomeLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allIn"]];
@@ -121,6 +121,41 @@
         vc.paramsInfo = info;
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    Information *info = _currentMonthArray[indexPath.row];
+   // NSString *predicateStr = _dateTF.text;
+    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"self == %@",info];
+    NSArray *findArray =[Information MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+    Information* foundInfo = [findArray firstObject];
+    [foundInfo MR_deleteEntity];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"删除成功"];
+                [self viewWillAppear:NO];
+            }else{
+                
+                [ZQUtils showAlert:@"删除失败，请重试"];
+            }
+        }
+    }];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return @"删除";
 }
 
 #pragma mark - Private methods
