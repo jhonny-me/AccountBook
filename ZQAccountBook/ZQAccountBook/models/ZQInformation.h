@@ -16,4 +16,6 @@
 
 + (ZQInformation *)Info;
 
+- (void) loadDataBaseInformationStatistics;
+
 @end

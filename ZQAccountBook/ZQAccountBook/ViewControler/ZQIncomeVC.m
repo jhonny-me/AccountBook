@@ -15,7 +15,7 @@ NSString *categorys[] = {@"工资",@"兼职",@"理财收益",@"其他"};
 
 NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate>
+@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate>
 {
     __weak IBOutlet UITextField *_categoryTF;
     __weak IBOutlet UITextField *_numberTF;

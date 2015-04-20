@@ -24,8 +24,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self loadZQMainVCData];
-    [self loadZQMainVCUI];
+//    [self loadZQMainVCData];
+//    [self loadZQMainVCUI];
 
 }
 
@@ -48,7 +48,12 @@
     _monthLb.text = month;
     
 }
-
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self loadZQMainVCData];
+    [self loadZQMainVCUI];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -15,7 +15,7 @@ NSString *outlayCategorys[] = {@"服饰",@"餐饮",@"居家",@"交通",@"其他"
 
 NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQOutlayVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate>
+@interface ZQOutlayVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate>
 {
     __weak IBOutlet UITextField *_categoryTF;
     __weak IBOutlet UITextField *_numberTF;

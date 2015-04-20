@@ -32,8 +32,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self loadZQDetialVCData];
-    [self loadZQDetialVCUI];
+//    [self loadZQDetialVCData];
+//    [self loadZQDetialVCUI];
 }
 
 - (void) loadZQDetialVCUI
@@ -49,15 +49,17 @@
 - (void) loadZQDetialVCData{
     
     _zqInfo = [ZQInformation Info];
+    [_zqInfo loadDataBaseInformationStatistics];
     _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getCurrentMonthKey]]];
     _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
 
+
 - (void) viewWillAppear:(BOOL)animated{
-    
     [super viewWillAppear:animated];
     
-   
+    [self loadZQDetialVCData];
+    [self loadZQDetialVCUI];
 }
 
 - (void)didReceiveMemoryWarning {
