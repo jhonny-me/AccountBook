@@ -462,6 +462,15 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="34"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PA7-yz-Zmi">
+                                                    <rect key="frame" x="282" y="16" width="28" height="30"/>
+                                                    <state key="normal" image="close_btn">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="deleteBtn_Pressed:" destination="XR1-hj-Ppe" eventType="touchUpInside" id="ass-oF-2H2"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -579,6 +588,7 @@
                         <outlet property="_cameraBtn" destination="Wzg-LM-Ibt" id="dJB-kI-ZbH"/>
                         <outlet property="_collectBtn" destination="y0g-9J-dgF" id="GOR-5e-mDa"/>
                         <outlet property="_dateTF" destination="HKS-eg-nYJ" id="fiX-HN-RDE"/>
+                        <outlet property="_deleteBtn" destination="PA7-yz-Zmi" id="eZx-o5-yCn"/>
                         <outlet property="_hintLb" destination="Ug0-Fe-Arw" id="X9o-ye-DjK"/>
                         <outlet property="_loanoutBtn" destination="Nq3-QT-gGq" id="6cz-9i-feA"/>
                         <outlet property="_moneycolorLb" destination="PvV-cV-m6A" id="o6E-Ig-Rhu"/>
@@ -635,6 +645,15 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="34"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ie2-Ih-9G4">
+                                                    <rect key="frame" x="282" y="16" width="28" height="30"/>
+                                                    <state key="normal" image="close_btn">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="deleteBtn_Pressed:" destination="Spm-tq-HzP" eventType="touchUpInside" id="e92-tP-PjN"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -748,6 +767,7 @@
                         <outlet property="_cameraBtn" destination="1mS-ny-1CZ" id="nrg-Zv-bqA"/>
                         <outlet property="_categoryTF" destination="Ceb-tu-f6b" id="TeZ-cV-qyk"/>
                         <outlet property="_dateTF" destination="AS6-uM-R7p" id="pEs-ev-N5Y"/>
+                        <outlet property="_deleteBtn" destination="ie2-Ih-9G4" id="LhA-f3-3es"/>
                         <outlet property="_hintLb" destination="vht-PA-d6O" id="za0-5n-HvF"/>
                         <outlet property="_numberTF" destination="XbV-pG-bqx" id="58G-Ci-UbH"/>
                         <outlet property="_remarkTextView" destination="hFW-Vq-a2H" id="RDe-oM-lXf"/>
@@ -800,6 +820,15 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="34"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ljA-dR-F2v">
+                                                    <rect key="frame" x="282" y="16" width="28" height="30"/>
+                                                    <state key="normal" image="close_btn">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="deleteBtn_Pressed:" destination="z4d-4u-Xfs" eventType="touchUpInside" id="TEK-eL-iTB"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -913,6 +942,7 @@
                         <outlet property="_cameraBtn" destination="fTT-lU-q6b" id="gdP-B9-sej"/>
                         <outlet property="_categoryTF" destination="Lyt-GT-k6n" id="6ZC-Cg-S77"/>
                         <outlet property="_dateTF" destination="XGk-Gf-PFM" id="Lny-qi-Lp6"/>
+                        <outlet property="_deleteBtn" destination="ljA-dR-F2v" id="Mud-RG-kwP"/>
                         <outlet property="_hintLb" destination="9A6-dJ-hiO" id="a39-xH-8dX"/>
                         <outlet property="_numberTF" destination="7OI-hg-Uyc" id="aks-bf-pHq"/>
                         <outlet property="_remarkTextView" destination="jL0-Cd-NsD" id="di4-w7-kcU"/>
@@ -943,6 +973,7 @@
     </scenes>
     <resources>
         <image name="camera_btn" width="129" height="129"/>
+        <image name="close_btn" width="15" height="15"/>
         <image name="credit_icon" width="32" height="32"/>
         <image name="give_tip_green_icon" width="42" height="58"/>
         <image name="greenBackgroundBTN" width="130" height="42"/>

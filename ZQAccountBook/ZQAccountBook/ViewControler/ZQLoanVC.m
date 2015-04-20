@@ -33,6 +33,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     __weak IBOutlet UIButton *_repayBtn;   //还债
     __weak IBOutlet UIButton *_collectBtn; //收债
     
+    __weak IBOutlet UIButton *_deleteBtn;
     // 应收账款，应付账款
     NSString *_getOrGive;
 }
@@ -294,6 +295,8 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 }
 - (IBAction)cameraBtn_Pressed:(id)sender {
     [self takePicture:YES];
+}
+- (IBAction)deleteBtn_Pressed:(id)sender {
 }
 
 - (IBAction)saveBtn_Pressed:(id)sender {

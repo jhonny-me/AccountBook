@@ -26,6 +26,7 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
     __weak IBOutlet UILabel *_hintLb;
     UIDatePicker *_datePicker;
     __weak IBOutlet UIButton *_cameraBtn;
+    __weak IBOutlet UIButton *_deleteBtn;
 }
 
 
@@ -62,6 +63,8 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         
         _dateTF.enabled = NO;
         _dateTF.textColor = [UIColor lightGrayColor];
+        
+        _deleteBtn.hidden = NO;
     }else{
 
         _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
@@ -276,6 +279,30 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
 }
 - (IBAction)cameraBtn_Pressed:(id)sender {
     [self takePicture:YES];
+}
+- (IBAction)deleteBtn_Pressed:(id)sender {
+    
+    NSString *predicateStr = _dateTF.text;
+    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"date == %@",predicateStr];
+    NSArray *findArray =[Information MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+    Information* info = [findArray firstObject];
+    [info MR_deleteEntity];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"删除成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                
+                [ZQUtils showAlert:@"删除失败，请重试"];
+            }
+        }
+    }];
+
 }
 
 - (IBAction)saveBtn_Pressed:(id)sender {
