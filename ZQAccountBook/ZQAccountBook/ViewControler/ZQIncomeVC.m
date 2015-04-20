@@ -7,7 +7,7 @@
 //
 
 #import "ZQIncomeVC.h"
-#import "Information.h"
+
 #import "CoreData+MagicalRecord.h"
 #import "ZQUtils.h"
 
@@ -35,18 +35,31 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self loadZQIncomeVCUI];
 }
 
+
 - (void) loadZQIncomeVCUI
 {
-    _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
-    
+    if (self.paramsInfo) {
+        
+        if (!self.paramsInfo.photo) {
+            [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+        }else{
+            [_cameraBtn setImage:self.paramsInfo.photo forState:UIControlStateNormal];
+        }
+        
+        _numberTF.text = [NSString stringWithFormat:@"%@",self.paramsInfo.amount];
+        _categoryTF.text = self.paramsInfo.category;
+        _accountTF.text  = self.paramsInfo.account;
+        _dateTF.text     = self.paramsInfo.date;
+        _remarkTextView.text = self.paramsInfo.remark;
+    }else{
+        
+        _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
+        [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+    }
     [self customizeKeyboards];
 }
 

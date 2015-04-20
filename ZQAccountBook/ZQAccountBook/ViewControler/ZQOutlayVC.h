@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Information.h"
 
 @interface ZQOutlayVC : UITableViewController
+
+@property (nonatomic, strong) Information *paramsInfo;
 
 @end

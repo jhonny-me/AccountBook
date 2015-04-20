@@ -12,6 +12,8 @@
 #import "ZQUtils.h"
 #import "ZQDetailSectionRowCell.h"
 #import "ZQInformation.h"
+#import "ZQIncomeVC.h"
+#import "ZQOutlayVC.h"
 
 @interface ZQDetialVC ()
 {
@@ -99,6 +101,23 @@
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    Information *info = _currentMonthArray[indexPath.row];
+    
+    if ([info.type isEqualToString:@"支出"]) {
+        
+        ZQOutlayVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ZQOutlayVC"];
+        vc.paramsInfo = info;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        
+        ZQIncomeVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ZQIncomeVC"];
+        vc.paramsInfo = info;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Private methods

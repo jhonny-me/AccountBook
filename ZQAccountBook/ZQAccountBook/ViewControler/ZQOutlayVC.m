@@ -7,7 +7,7 @@
 //
 
 #import "ZQOutlayVC.h"
-#import "Information.h"
+
 #import "CoreData+MagicalRecord.h"
 #import "ZQUtils.h"
 
@@ -46,8 +46,23 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
 
 - (void) loadZQOutlayVCUI
 {
-    
-    _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
+    if (self.paramsInfo) {
+        
+        if (!self.paramsInfo.photo) {
+            [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+        }else{
+            [_cameraBtn setImage:self.paramsInfo.photo forState:UIControlStateNormal];
+        }
+        
+        _numberTF.text = [NSString stringWithFormat:@"%@",self.paramsInfo.amount];
+        _categoryTF.text = self.paramsInfo.category;
+        _accountTF.text  = self.paramsInfo.account;
+        _dateTF.text     = self.paramsInfo.date;
+        _remarkTextView.text = self.paramsInfo.remark;
+    }else{
+
+        _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
+    }
     [self customizeKeyboards];
 }
 

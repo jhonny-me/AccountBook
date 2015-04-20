@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ZQAccountBook/models/ZQInformation.m"
-            timestampString = "451200893.500097"
+            filePath = "ZQAccountBook/ViewControler/ZQOutlayVC.m"
+            timestampString = "451205889.228147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "-loadDataBaseInformationStatistics"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "-saveBtn_Pressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

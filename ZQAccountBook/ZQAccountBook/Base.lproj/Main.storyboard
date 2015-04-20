@@ -595,7 +595,7 @@
         <!--IncomeVC-->
         <scene sceneID="NQn-e8-HcR">
             <objects>
-                <tableViewController id="Spm-tq-HzP" userLabel="IncomeVC" customClass="ZQIncomeVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ZQIncomeVC" id="Spm-tq-HzP" userLabel="IncomeVC" customClass="ZQIncomeVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="KpA-dn-1S1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -760,7 +760,7 @@
         <!--OutlayVC-->
         <scene sceneID="XPf-pD-TVT">
             <objects>
-                <tableViewController id="z4d-4u-Xfs" userLabel="OutlayVC" customClass="ZQOutlayVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ZQOutlayVC" id="z4d-4u-Xfs" userLabel="OutlayVC" customClass="ZQOutlayVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gvF-Nu-Ek4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
