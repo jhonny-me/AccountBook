@@ -55,6 +55,9 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         _accountTF.text  = self.paramsInfo.account;
         _dateTF.text     = self.paramsInfo.date;
         _remarkTextView.text = self.paramsInfo.remark;
+        
+        _dateTF.enabled = NO;
+        _dateTF.textColor = [UIColor lightGrayColor];
     }else{
         
         _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
@@ -247,9 +250,13 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
   //      [_categoryTF resignFirstResponder];
         [_accountTF becomeFirstResponder];
     }else if (sender.tag == 1002){
-        
-   //     [_accountTF resignFirstResponder];
-        [_dateTF becomeFirstResponder];
+        //如果是修改则到账户选择过后直接隐藏键盘
+        if(self.paramsInfo){
+            
+            [_accountTF resignFirstResponder];
+        }else{
+            [_dateTF becomeFirstResponder];
+        }
     }else if (sender.tag == 1003){
         
         [_dateTF resignFirstResponder];
@@ -271,7 +278,19 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         [ZQUtils showAlert:@"请输入金额！！"];
         return;
     }
-    Information *info = [Information MR_createEntity];
+    
+    // 判断是新增数据还是修改数据
+    Information *info;
+    if (self.paramsInfo) {
+        NSString *predicateStr = _dateTF.text;
+        NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"date == %@",predicateStr];
+        NSArray *findArray =[Information MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+        info = [findArray firstObject];
+        
+    }else{
+
+        info = [Information MR_createEntity];
+    }
     info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _categoryTF.text;
@@ -280,7 +299,8 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     info.remark    = _remarkTextView.text;
 //    info.name      = @"";
     info.type      = @"收入";
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+    
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
         if(error)
         {
             [ZQUtils showAlert:[error localizedDescription]];
@@ -329,49 +349,6 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         _hintLb.hidden = NO;
     }
 }
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 /*
 #pragma mark - Navigation

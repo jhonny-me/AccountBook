@@ -60,6 +60,7 @@
     
     [self loadZQDetialVCData];
     [self loadZQDetialVCUI];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

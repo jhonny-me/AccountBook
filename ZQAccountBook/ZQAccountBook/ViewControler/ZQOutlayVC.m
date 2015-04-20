@@ -59,6 +59,9 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         _accountTF.text  = self.paramsInfo.account;
         _dateTF.text     = self.paramsInfo.date;
         _remarkTextView.text = self.paramsInfo.remark;
+        
+        _dateTF.enabled = NO;
+        _dateTF.textColor = [UIColor lightGrayColor];
     }else{
 
         _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
@@ -254,8 +257,13 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         [_accountTF becomeFirstResponder];
     }else if (sender.tag == 1002){
         
-        //     [_accountTF resignFirstResponder];
-        [_dateTF becomeFirstResponder];
+        //如果是修改则到账户选择过后直接隐藏键盘
+        if(self.paramsInfo){
+            
+            [_accountTF resignFirstResponder];
+        }else{
+            [_dateTF becomeFirstResponder];
+        }
     }else if (sender.tag == 1003){
         
         [_dateTF resignFirstResponder];
@@ -277,7 +285,19 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         [ZQUtils showAlert:@"请输入金额！！"];
         return;
     }
-    Information *info = [Information MR_createEntity];
+    
+    // 判断是新增数据还是修改数据
+    Information *info;
+    if (self.paramsInfo) {
+        NSString *predicateStr = _dateTF.text;
+        NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"date == %@",predicateStr];
+        NSArray *findArray =[Information MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+        info = [findArray firstObject];
+        
+    }else{
+        
+        info = [Information MR_createEntity];
+    }
     info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _categoryTF.text;
