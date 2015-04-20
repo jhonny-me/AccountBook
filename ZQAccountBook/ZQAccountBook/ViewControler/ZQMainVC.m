@@ -8,25 +8,45 @@
 
 #import "ZQMainVC.h"
 #import "ZQInformation.h"
+#import "ZQUtils.h"
 
 @interface ZQMainVC ()
+{
+    ZQInformation *_zqInfo;
+}
 
 @end
 
 @implementation ZQMainVC
 
+#pragma mark - View Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    ZQInformation *info = [ZQInformation Info];
-    // 用count ＝＝0 来判断
-//    if ([info.sortByMonthInArray objectForKey:@"2"] == nil) {
-//        NSLog(@"ugghgdhsdsgdhsd");
-//    }
-//    if ([(NSArray*)[info.sortByMonthInArray objectForKey:@"2"] count] == 0) {
-//        NSLog(@"yyyyyyy");
-//    }
+    [self loadZQMainVCData];
+    [self loadZQMainVCUI];
+
+}
+
+- (void) loadZQMainVCData{
+
+    _zqInfo = [ZQInformation Info];
+}
+
+- (void) loadZQMainVCUI{
+
+    _allInLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByMonthInArray objectForKey:@"收入总额"]];
+    _allOutLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByMonthInArray objectForKey:@"支出总额"]];
+    
+    NSString *date = [ZQUtils getCurrentYearAndMonth];
+    NSString *year = [date substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [date stringByReplacingOccurrencesOfString:[year stringByAppendingString:@"年"] withString:@""];
+    month = [month stringByReplacingOccurrencesOfString:@"月" withString:@""];
+    year = [@" /" stringByAppendingString:year];
+    _yearLb.text = year;
+    _monthLb.text = month;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,14 +54,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Private Methods
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

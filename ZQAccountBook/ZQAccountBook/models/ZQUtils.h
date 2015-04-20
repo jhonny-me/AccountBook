@@ -15,5 +15,6 @@
 + (void)showAlert: (NSString*)message;
 + (NSString *) stringFromDate:(NSDate*)fromDate;
 + (NSDate *)dateFromString:(NSString *)dateString;
++ (NSString *) getCurrentYearAndMonth;
 
 @end

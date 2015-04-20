@@ -11,11 +11,15 @@
 #import "Information.h"
 #import "ZQUtils.h"
 #import "ZQDetailSectionRowCell.h"
+#import "ZQInformation.h"
 
 @interface ZQDetialVC ()
 {
-   
-    NSMutableDictionary *_sortByMonthInArray;
+    ZQInformation *_zqInfo;
+    // 当月数组与统计字典
+    NSDictionary *_currentMonthDic;
+    // 当月数组
+    NSArray *_currentMonthArray;
 }
 
 @end
@@ -33,12 +37,18 @@
 - (void) loadZQDetialVCUI
 {
     [self.tableView setTableHeaderView:_detailHeaderCell];
-//    self.tableView.sectionHeaderHeight = 124.f ;
+    
+    _headYearLb.text = [ZQUtils getCurrentYearAndMonth];
+    _headIncomeLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allIn"]];
+    _headOutlayLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allOut"]];
+    _headSurplusLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allSurplus"]];
 }
 
 - (void) loadZQDetialVCData{
     
-    _sortByMonthInArray = [[NSMutableDictionary alloc]init];
+    _zqInfo = [ZQInformation Info];
+    _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getCurrentMonthKey]]];
+    _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -56,24 +66,26 @@
 #pragma mark - tableView operation
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *monthArray = [NSArray arrayWithArray:[_sortByMonthInArray objectForKey:@"4月"]];
-    return monthArray.count;
+    return _currentMonthArray.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"myCell"];
-    
 
     ZQDetailSectionRowCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ZQDetailSectionRowCell"];
+    
     if (cell == nil) {
+        
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ZQDetailSectionRowCell" owner:nil options:nil] lastObject];
     }
-    NSArray *monthArray = [NSArray arrayWithArray:[_sortByMonthInArray objectForKey:@"4月"]];
-    Information *tmpInfo = monthArray[indexPath.row];
+   
+    
+    Information *tmpInfo = _currentMonthArray[indexPath.row];
+    
     cell.dateLb.text = [[tmpInfo.date substringWithRange:NSMakeRange(8, 2)] stringByAppendingString:@"号"];
     cell.categoryLb.text = tmpInfo.category;
+    
     if ([tmpInfo.type isEqualToString:@"支出"]) {
     
         cell.amountLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
@@ -82,6 +94,7 @@
     }else{
     
         cell.amountLb.textColor = [UIColor redColor];
+        
         cell.amountLb.text = [NSString stringWithFormat:@"%@",tmpInfo.amount];
     }
     
@@ -90,29 +103,11 @@
 
 #pragma mark - Private methods
 
-- (void) loadDataBaseStatistics{
-
-    for (int i=1; i<13; i++) {
-        NSString *predicateStr;
-        NSMutableArray *_infoMonthlyArray;
-        if (i<10) {
-            
-            predicateStr = [NSString stringWithFormat:@"2015-0%d*",i];
-        }else{
-            
-            predicateStr = [NSString stringWithFormat:@"2015-%d*",i];
-        }
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
-        [_infoMonthlyArray removeAllObjects];
-        _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
-        
-        NSString *key = [NSString stringWithFormat:@"%d月",i];
-        [_sortByMonthInArray setObject:[_infoMonthlyArray mutableCopy] forKey:key];
-    }
-    if (_sortByMonthInArray) {
-        
-    }
-
+- (NSString *)getCurrentMonthKey{
+    
+    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
+    NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
+    return monthKey;
 }
 
 /*

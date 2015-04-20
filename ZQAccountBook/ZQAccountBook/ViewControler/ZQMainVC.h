@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface ZQMainVC : UITableViewController
+{
+
+    __weak IBOutlet UILabel *_monthLb;
+    __weak IBOutlet UILabel *_yearLb;
+    __weak IBOutlet UILabel *_allInLb;
+    __weak IBOutlet UILabel *_allOutLb;
+}
 
 @end

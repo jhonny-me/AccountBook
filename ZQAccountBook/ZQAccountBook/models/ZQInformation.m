@@ -37,27 +37,17 @@ static ZQInformation* zqInfomation;
 
 - (void)initialize
 {
-    NSDictionary *dic = [[NSDictionary alloc]init];
-    // 保证每个月份的value值不为nil
-//    self.sortByMonthInArray =[NSMutableDictionary dictionaryWithDictionary: @{
-//                            @"1月":dic,
-//                            @"2月":dic,
-//                            @"3月":dic,
-//                            @"4月":dic,
-//                            @"5月":dic,
-//                            @"6月":dic,
-//                            @"7月":dic,
-//                            @"8月":dic,
-//                            @"9月":dic,
-//                            @"10月":dic,
-//                            @"11月":dic,
-//                            @"12月":dic
-//                            }];
+
+    self.sortByMonthInArray = [[NSMutableDictionary alloc]init];
+
     [self loadDataBaseInformationStatistics];
     NSLog(@"%@",self.sortByMonthInArray);
 }
 
 - (void) loadDataBaseInformationStatistics{
+    // 当年收入与支出总额
+    float yearAllIn = 0;
+    float yearAllOut = 0;
     
     for (int i=1; i<13; i++) {
         NSString *predicateStr;
@@ -72,10 +62,16 @@ static ZQInformation* zqInfomation;
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
         [_infoMonthlyArray removeAllObjects];
         _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
-        NSDictionary *dic =[self getMonthlyDictionaryWithArray:_infoMonthlyArray];
+        NSDictionary *dic =[[self getMonthlyDictionaryWithArray:_infoMonthlyArray]mutableCopy];
         NSString *key = [NSString stringWithFormat:@"%d月",i];
         [self.sortByMonthInArray setObject:dic forKey:key];
+        
+        yearAllIn += [[dic objectForKey:@"allIn"] floatValue];
+        yearAllOut += [[dic objectForKey:@"allOut"] floatValue];
     }
+    
+    [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllIn] forKey:@"收入总额"];
+    [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllOut] forKey:@"支出总额"];
     if (self.sortByMonthInArray) {
         
     }
@@ -87,6 +83,8 @@ static ZQInformation* zqInfomation;
     float allIn = 0;
     // 总支出
     float allOut = 0;
+    // 结余
+    float allSurplus;
     // 计算总收入支出
     for (Information *info in array) {
         if ([info.type isEqualToString:@"支出"]) {
@@ -97,11 +95,14 @@ static ZQInformation* zqInfomation;
             allIn += [info.amount floatValue];
         }
     }
+    // 计算结余
+    allSurplus = allIn - allOut;
     // 打包数据
     NSDictionary *dic = @{
                           @"array":array,
                           @"allIn":[NSNumber numberWithFloat:allIn],
-                          @"allOut":[NSNumber numberWithFloat:allOut]
+                          @"allOut":[NSNumber numberWithFloat:allOut],
+                          @"allSurplus":[NSNumber numberWithFloat:allSurplus]
                           };
     return dic;
 }
