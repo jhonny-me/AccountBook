@@ -14,7 +14,7 @@
 
 NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate>
+@interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 {
     __weak IBOutlet UITextField *_nameTF;
     __weak IBOutlet UITextField *_numberTF;
@@ -228,6 +228,17 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     }
 }
 
+#pragma mark - ActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex == 0) {
+        [self takePicture:YES];
+    }else if (buttonIndex == 1){
+        [self takePicture:NO];
+    }
+}
+
 #pragma mark - textView Delegate
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -294,7 +305,9 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     }
 }
 - (IBAction)cameraBtn_Pressed:(id)sender {
-    [self takePicture:YES];
+    
+    UIActionSheet *cameraSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍照" otherButtonTitles:@"从相册选取", nil];
+    [cameraSheet showInView:self.view];
 }
 - (IBAction)deleteBtn_Pressed:(id)sender {
 }

@@ -15,7 +15,7 @@ NSString *categorys[] = {@"工资",@"兼职",@"理财收益",@"其他"};
 
 NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate>
+@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 {
     __weak IBOutlet UITextField *_categoryTF;
     __weak IBOutlet UITextField *_numberTF;
@@ -271,7 +271,9 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     }
 }
 - (IBAction)cameraBtn_Pressed:(id)sender {
-    [self takePicture:YES];
+    
+    UIActionSheet *cameraSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍照" otherButtonTitles:@"从相册选取", nil];
+    [cameraSheet showInView:self.view];
 }
 - (IBAction)deleteBtn_Pressed:(id)sender {
     
@@ -342,6 +344,17 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
             }
         }
     }];
+}
+
+#pragma mark - ActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex == 0) {
+        [self takePicture:YES];
+    }else if (buttonIndex == 1){
+        [self takePicture:NO];
+    }
 }
 
 #pragma mark - textfield Delegate
