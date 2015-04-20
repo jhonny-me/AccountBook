@@ -34,13 +34,14 @@
     
 //    [self loadZQDetialVCData];
 //    [self loadZQDetialVCUI];
+    _headYearLb.text = [ZQUtils getCurrentYearAndMonth];
 }
 
 - (void) loadZQDetialVCUI
 {
     [self.tableView setTableHeaderView:_headerView];
     
-    _headYearLb.text = [ZQUtils getCurrentYearAndMonth];
+    
     _headIncomeLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allIn"]];
     _headOutlayLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allOut"]];
     _headSurplusLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allSurplus"]];
@@ -50,7 +51,7 @@
     
     _zqInfo = [ZQInformation Info];
     [_zqInfo loadDataBaseInformationStatistics];
-    _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getCurrentMonthKey]]];
+    _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getMonthKey]]];
     _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
 
@@ -160,12 +161,32 @@
 
 #pragma mark - Private methods
 
-- (NSString *)getCurrentMonthKey{
+- (NSString *)getMonthKey{
     
     NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
     NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
     return monthKey;
 }
+
+#pragma mark - Button Events
+
+- (IBAction)monthChangeBtn_Pressed:(UIButton*)sender {
+    
+    NSString *oldMonth = [self getMonthKey];
+    oldMonth = [oldMonth stringByReplacingOccurrencesOfString:@"月" withString:@""];
+    int i = oldMonth.intValue;
+    if (sender.tag == 881) {
+        i--;
+    }else{
+        i++;
+    }
+    NSString *newMonth = [NSString stringWithFormat:@"%d月",i];
+    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
+    NSString *newYearAndMonth = [year stringByAppendingString:newMonth];
+    _headYearLb.text = newYearAndMonth;
+    [self viewWillAppear:NO];
+}
+
 
 /*
 #pragma mark - Navigation
