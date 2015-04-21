@@ -39,12 +39,14 @@ static ZQInformation* zqInfomation;
 {
 
     self.sortByMonthInArray = [[NSMutableDictionary alloc]init];
-
-    [self loadDataBaseInformationStatistics];
+    
+    // 获取当前年份
+    NSString *currentYear = [[ZQUtils stringFromDate:[NSDate date]] substringWithRange:NSMakeRange(0, 4)];
+    [self loadDataBaseInformationStatisticsWithYear:currentYear];
     NSLog(@"%@",self.sortByMonthInArray);
 }
 
-- (void) loadDataBaseInformationStatistics{
+- (void) loadDataBaseInformationStatisticsWithYear:(NSString *)year{
     // 当年收入与支出总额
     float yearAllIn = 0;
     float yearAllOut = 0;
@@ -52,13 +54,15 @@ static ZQInformation* zqInfomation;
     for (int i=1; i<13; i++) {
         NSString *predicateStr;
         NSMutableArray *_infoMonthlyArray;
+        NSString *preoperationStr;
         if (i<10) {
             
-            predicateStr = [NSString stringWithFormat:@"2015-0%d*",i];
+            preoperationStr = [NSString stringWithFormat:@"-0%d*",i];
         }else{
             
-            predicateStr = [NSString stringWithFormat:@"2015-%d*",i];
+            preoperationStr = [NSString stringWithFormat:@"-%d*",i];
         }
+        predicateStr = [year stringByAppendingString:preoperationStr];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
         [_infoMonthlyArray removeAllObjects];
         _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Information.h"
+#import "ZQUtils.h"
 
 
 @interface ZQInformation :Information
@@ -16,6 +17,6 @@
 
 + (ZQInformation *)Info;
 
-- (void) loadDataBaseInformationStatistics;
+- (void) loadDataBaseInformationStatisticsWithYear:(NSString *)year;
 
 @end

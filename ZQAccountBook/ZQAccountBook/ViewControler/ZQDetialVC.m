@@ -15,7 +15,7 @@
 #import "ZQIncomeVC.h"
 #import "ZQOutlayVC.h"
 
-@interface ZQDetialVC ()
+@interface ZQDetialVC ()<UIPickerViewDelegate,UIPickerViewDataSource>
 {
     ZQInformation *_zqInfo;
     // 当月数组与统计字典
@@ -45,12 +45,13 @@
     _headIncomeLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allIn"]];
     _headOutlayLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allOut"]];
     _headSurplusLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allSurplus"]];
+    
 }
 
 - (void) loadZQDetialVCData{
     
     _zqInfo = [ZQInformation Info];
-    [_zqInfo loadDataBaseInformationStatistics];
+    [_zqInfo loadDataBaseInformationStatisticsWithYear:[_headYearLb.text substringWithRange:NSMakeRange(0, 4)]];
     _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getMonthKey]]];
     _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
@@ -159,12 +160,30 @@
     return @"删除";
 }
 
+#pragma mark - pickerView operation
+
+// returns the number of 'columns' to display.
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    
+    return 2;
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    if (component == 0) {
+        return 10;
+    }else{
+        return 12;
+    }
+}
+
 #pragma mark - Private methods
 
 - (NSString *)getMonthKey{
     
     NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
-    NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
+//    NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
+    NSString *monthKey = [_headYearLb.text stringByReplacingOccurrencesOfString:year withString:@""];
     return monthKey;
 }
 
@@ -174,14 +193,23 @@
     
     NSString *oldMonth = [self getMonthKey];
     oldMonth = [oldMonth stringByReplacingOccurrencesOfString:@"月" withString:@""];
+    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 4)];
     int i = oldMonth.intValue;
     if (sender.tag == 881) {
         i--;
     }else{
         i++;
     }
+    if (i==0) {
+        i=12;
+        year = [NSString stringWithFormat:@"%d年",([year integerValue]-1)];
+    }else if (i==13){
+        i=1;
+        year = [NSString stringWithFormat:@"%d年",([year integerValue]+1)];
+    }else{
+        year = [year stringByAppendingString:@"年"];
+    }
     NSString *newMonth = [NSString stringWithFormat:@"%d月",i];
-    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
     NSString *newYearAndMonth = [year stringByAppendingString:newMonth];
     _headYearLb.text = newYearAndMonth;
     [self viewWillAppear:NO];
