@@ -18,5 +18,6 @@
 @dynamic photo;
 @dynamic category;
 @dynamic date;
+@dynamic type;
 
 @end

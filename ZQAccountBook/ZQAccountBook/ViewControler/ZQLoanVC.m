@@ -331,7 +331,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     info.date      = _dateTF.text;
     info.remark    = _remarkTextView.text;
     info.name      = _nameTF.text;
-//    info.type      = @"借贷";
+    info.type      = _getOrGive;
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
         if(error)
         {

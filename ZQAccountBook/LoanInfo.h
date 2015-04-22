@@ -19,5 +19,6 @@
 @property (nonatomic, retain) id photo;
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSString * date;
+@property (nonatomic, retain) NSString * type;
 
 @end
