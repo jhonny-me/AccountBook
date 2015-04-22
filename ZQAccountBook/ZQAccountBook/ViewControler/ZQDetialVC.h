@@ -11,7 +11,7 @@
 @interface ZQDetialVC : UITableViewController
 {
     // tableview head
-    __weak IBOutlet UILabel *_headYearLb;
+    __weak IBOutlet UITextField *_headYearTF;
     __weak IBOutlet UILabel *_headSurplusLb;
     __weak IBOutlet UILabel *_headIncomeLb;
     __weak IBOutlet UILabel *_headOutlayLb;

@@ -15,13 +15,21 @@
 #import "ZQIncomeVC.h"
 #import "ZQOutlayVC.h"
 
-@interface ZQDetialVC ()<UIPickerViewDelegate,UIPickerViewDataSource>
+NSString *yearArray[] = {@"2010年",@"2011年",@"2012年",@"2013年",@"2014年",@"2015年",@"2016年",@"2017年",@"2018年",@"2019年",@"2020年"};
+
+NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月",@"8月",@"9月",@"10月",@"11月",@"12月"};
+
+@interface ZQDetialVC ()<UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 {
     ZQInformation *_zqInfo;
     // 当月数组与统计字典
     NSDictionary *_currentMonthDic;
     // 当月数组
     NSArray *_currentMonthArray;
+    
+    NSString *_choosedYearAndMonth;
+    
+    UIPickerView *_datePicker;
 }
 
 @end
@@ -34,7 +42,7 @@
     
 //    [self loadZQDetialVCData];
 //    [self loadZQDetialVCUI];
-    _headYearLb.text = [ZQUtils getCurrentYearAndMonth];
+    _headYearTF.text = [ZQUtils getCurrentYearAndMonth];
 }
 
 - (void) loadZQDetialVCUI
@@ -46,12 +54,13 @@
     _headOutlayLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allOut"]];
     _headSurplusLb.text = [NSString stringWithFormat:@"%@",[_currentMonthDic objectForKey:@"allSurplus"]];
     
+    [self customizeDatePicker];
 }
 
 - (void) loadZQDetialVCData{
     
     _zqInfo = [ZQInformation Info];
-    [_zqInfo loadDataBaseInformationStatisticsWithYear:[_headYearLb.text substringWithRange:NSMakeRange(0, 4)]];
+    [_zqInfo loadDataBaseInformationStatisticsWithYear:[_headYearTF.text substringWithRange:NSMakeRange(0, 4)]];
     _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getMonthKey]]];
     _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
@@ -177,14 +186,74 @@
     }
 }
 
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if(component == 0){
+    
+        return yearArray[row];
+    }else{
+    
+        return monthArray[row];
+    }
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSLog(@"PickerView - DidSelectRow at %ld, %ld", (long)component, (long)row);
+    
+    NSString *year = [[NSString alloc]init];
+    NSString *month = [[NSString alloc]init];
+    if (component ==0) {
+    
+        year = yearArray[row];
+        int index = [pickerView selectedRowInComponent:1];
+        month = monthArray[index];
+    }else{
+    
+        month = monthArray[row];
+        int index = [pickerView selectedRowInComponent:0];
+        year = yearArray[index];
+    }
+    
+    _choosedYearAndMonth = [[year stringByAppendingString:month] mutableCopy];
+}
+
+#pragma mark - TextField Delegate
+
+- (void) returnKey_Pressed:(UIBarButtonItem*)sender{
+
+    
+    [_headYearTF resignFirstResponder];
+    _headYearTF.text = _choosedYearAndMonth;
+    [self viewWillAppear:NO];
+}
+
 #pragma mark - Private methods
 
 - (NSString *)getMonthKey{
     
-    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 5)];
+    NSString *year = [_headYearTF.text substringWithRange:NSMakeRange(0, 5)];
 //    NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
-    NSString *monthKey = [_headYearLb.text stringByReplacingOccurrencesOfString:year withString:@""];
+    NSString *monthKey = [_headYearTF.text stringByReplacingOccurrencesOfString:year withString:@""];
     return monthKey;
+}
+
+- (void) customizeDatePicker{
+    _datePicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 0, 320, 216)];
+    [_datePicker setDelegate: self];
+    [_datePicker setDataSource: self];
+    _datePicker.tag = 991;
+    _headYearTF.inputView = _datePicker;
+    [_datePicker selectRow:5 inComponent:0 animated:NO];
+    [_datePicker selectRow:4 inComponent:1 animated:NO];
+    
+    UIBarButtonItem *nextBtn = [[UIBarButtonItem alloc] initWithTitle: @"确定" style: UIBarButtonItemStyleDone target: self action: @selector(returnKey_Pressed:)];
+    nextBtn.tag = 1001;
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace target: nil action: nil];
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+    toolBar.barStyle = UIBarStyleDefault;
+    toolBar.items = [NSArray arrayWithObjects: spaceItem, nextBtn, nil];
+    _headYearTF.inputAccessoryView = toolBar;
 }
 
 #pragma mark - Button Events
@@ -193,7 +262,7 @@
     
     NSString *oldMonth = [self getMonthKey];
     oldMonth = [oldMonth stringByReplacingOccurrencesOfString:@"月" withString:@""];
-    NSString *year = [_headYearLb.text substringWithRange:NSMakeRange(0, 4)];
+    NSString *year = [_headYearTF.text substringWithRange:NSMakeRange(0, 4)];
     int i = oldMonth.intValue;
     if (sender.tag == 881) {
         i--;
@@ -211,7 +280,7 @@
     }
     NSString *newMonth = [NSString stringWithFormat:@"%d月",i];
     NSString *newYearAndMonth = [year stringByAppendingString:newMonth];
-    _headYearLb.text = newYearAndMonth;
+    _headYearTF.text = newYearAndMonth;
     [self viewWillAppear:NO];
 }
 

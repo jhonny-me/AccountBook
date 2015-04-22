@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZQAccountBook/ViewControler/ZQDetialVC.m"
-            timestampString = "451324187.696148"
+            timestampString = "451406763.627563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
             landmarkName = "-monthChangeBtn_Pressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,28 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZQAccountBook/ViewControler/ZQDetialVC.m"
-            timestampString = "451322980.385003"
+            timestampString = "451406763.627563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "-loadZQDetialVCData"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZQAccountBook/ViewControler/ZQDetialVC.m"
-            timestampString = "451323336.321769"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "-getMonthKey"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "-returnKey_Pressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
