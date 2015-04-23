@@ -14,6 +14,7 @@ static ZQInformation* zqInfomation;
 @implementation ZQInformation
 
 @synthesize sortByMonthInArray;
+@synthesize sortByNameInArray;
 
 + (ZQInformation *)Info{
 
@@ -43,8 +44,11 @@ static ZQInformation* zqInfomation;
     // 获取当前年份
     NSString *currentYear = [[ZQUtils stringFromDate:[NSDate date]] substringWithRange:NSMakeRange(0, 4)];
     [self loadDataBaseInformationStatisticsWithYear:currentYear];
+    [self loadDataBaseLoanInfoStatisticsWithYear:currentYear];
     NSLog(@"%@",self.sortByMonthInArray);
 }
+
+// 按年读取收入支出数据库并按月存
 
 - (void) loadDataBaseInformationStatisticsWithYear:(NSString *)year{
     // 当年收入与支出总额
@@ -79,6 +83,50 @@ static ZQInformation* zqInfomation;
     if (self.sortByMonthInArray) {
         
     }
+}
+
+// 按年读取借贷数据库并按人名保存
+
+- (void) loadDataBaseLoanInfoStatisticsWithYear:(NSString *)year{
+
+    // 当年借入与借出总额
+    float yearAllShouldGive = 0;
+    float yearAllShouldGet = 0;
+    
+    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@*",year];
+    NSMutableArray *needSortArray = [[NSMutableArray alloc]init];
+    needSortArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:@"name" withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
+    NSString *currentName = [(LoanInfo *)[needSortArray firstObject] name];
+    for (LoanInfo *info in needSortArray) {
+        if (![info.name isEqualToString:currentName]) {
+            <#statements#>
+        }
+    }
+    
+    
+    for (int i=1; i<13; i++) {
+        
+        NSMutableArray *_infoMonthlyArray;
+        NSString *preoperationStr;
+      
+        
+        [_infoMonthlyArray removeAllObjects];
+        
+        NSDictionary *dic =[[self getMonthlyDictionaryWithArray:_infoMonthlyArray]mutableCopy];
+        NSString *key = [NSString stringWithFormat:@"%d月",i];
+        [self.sortByMonthInArray setObject:dic forKey:key];
+        
+        yearAllIn += [[dic objectForKey:@"allIn"] floatValue];
+        yearAllOut += [[dic objectForKey:@"allOut"] floatValue];
+    }
+    
+    [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllIn] forKey:@"收入总额"];
+    [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllOut] forKey:@"支出总额"];
+    if (self.sortByMonthInArray) {
+        
+    }
+
 }
 
 // 将每月的数组计算总支出与总收入并打包为字典传回
