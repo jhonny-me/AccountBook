@@ -14,6 +14,7 @@
     __weak IBOutlet UITextField *_headerYearTF;
     __weak IBOutlet UILabel *_shouldGetLb;
     __weak IBOutlet UILabel *_shouldGiveLb;
+    IBOutlet UIView *_headView;
 }
 
 @end
