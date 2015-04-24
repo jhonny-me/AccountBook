@@ -1,64 +1,64 @@
 //
-//  ZQPeopleNameVC.m
+//  ZQPeopleDetailVC.m
 //  ZQAccountBook
 //
-//  Created by jhonny.copper on 15/4/23.
+//  Created by Mac OS X  on 15/4/24.
 //  Copyright (c) 2015年 jhonny. All rights reserved.
 //
 
-#import "ZQPeopleNameVC.h"
-#import "ZQUtils.h"
-#import "LoanInfo.h"
-#import "ZQInformation.h"
-#import "CoreData+MagicalRecord.h"
 #import "ZQPeopleDetailVC.h"
+#import "ZQInformation.h"
+#import "ZQDetailSectionRowCell.h"
+#import "ZQLoanVC.h"
 
-@interface ZQPeopleNameVC ()
+@interface ZQPeopleDetailVC ()
 {
-
     ZQInformation *_zqInfo;
-    NSArray *_nameArray;
+    NSArray *_infoArray;
+    NSDictionary *_selectedDic;
 }
 
 @end
 
-@implementation ZQPeopleNameVC
+@implementation ZQPeopleDetailVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     _headerYearTF.enabled = NO;
+    [self.tableView setTableHeaderView:_headerView];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-- (void) loadZQPeopleNameVCUI
-{
-    [self.tableView setTableHeaderView:_headView];
-    
-    
-    _shouldGetLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByNameInArray objectForKey:@"应收总额"]];
-    _shouldGiveLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByNameInArray objectForKey:@"应付总额"]];
-    
 
+- (void) loadZQPeopleDetailVCUI
+{
+    
+    _allShouldGetLb.text = [NSString stringWithFormat:@"%@",[_selectedDic objectForKey:@"allShouldGet"]];
+    _allShouldGiveLb.text = [NSString stringWithFormat:@"%@",[_selectedDic objectForKey:@"allShouldGive"]];
+    
+    
 }
 
 - (void) loadZQPeopleNameVCData{
-    
+    _infoArray = [[NSArray alloc]init];
+    _selectedDic = [[NSDictionary alloc]init];
     _zqInfo = [ZQInformation Info];
+    
     [_zqInfo loadDataBaseLoanInfoStatisticsWithYear:[_headerYearTF.text substringWithRange:NSMakeRange(0, 4)]];
     
-    _nameArray = [[_zqInfo.sortByNameInArray objectForKey:@"nameArray"] mutableCopy];
+    _selectedDic = [_zqInfo.sortByNameInArray objectForKey:self.selectedName];
+    _infoArray  = [_selectedDic objectForKey:@"array"];
 }
-
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     [self loadZQPeopleNameVCData];
-    [self loadZQPeopleNameVCUI];
+    [self loadZQPeopleDetailVCUI];
     [self.tableView reloadData];
 }
 
@@ -78,79 +78,51 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return _nameArray.count;
+    return _infoArray.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"nameCell"];
+    ZQDetailSectionRowCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ZQDetailSectionRowCell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"nameCell"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ZQDetailSectionRowCell" owner:nil options:nil] lastObject];
     }
-    cell.imageView.image = [UIImage imageNamed:@"profile_icon"];
-    NSString *name= _nameArray[indexPath.row];
-    cell.textLabel.text = name;
-    NSDictionary *dic = [[_zqInfo.sortByNameInArray objectForKey:name] mutableCopy];
-    
-    if (dic[@"allSurplus"] < [NSNumber numberWithFloat:0]) {
+    LoanInfo *info = _infoArray[indexPath.row];
+    cell.dateLb.text = info.name;
+    cell.categoryLb.text = info.category;
+    // 设置字体颜色
+    if ([info.type isEqualToString:@"应付账款"]) {
         
-        cell.detailTextLabel.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"应付%@",dic[@"allSurplus"]];
+        cell.amountLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+        
     }else{
-    
-        cell.detailTextLabel.textColor = [UIColor redColor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"应收%@",dic[@"allSurplus"]];
+        
+        cell.amountLb.textColor = [UIColor redColor];
     }
-
-    
+    cell.amountLb.text = [NSString stringWithFormat:@"%@",info.amount];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    ZQPeopleDetailVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ZQPeopleDetailVC"];
-    vc.selectedName = _nameArray[indexPath.row];
+    LoanInfo *info = _infoArray[indexPath.row];
+        
+    ZQLoanVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ZQLoanVC"];
+    vc.paramsInfo = info;
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return YES;
+
+#pragma mark - Button Events
+- (IBAction)backYearBtn_Pressed:(id)sender {
+}
+- (IBAction)forwardYearBtn_Pressed:(id)sender {
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString *name = _nameArray[indexPath.row];
-    // NSString *predicateStr = _dateTF.text;
-    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"name == %@",name];
-    NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
-    
-    for (LoanInfo* info in findArray) {
-        [info MR_deleteEntity];
-    }
-    
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
-        if(error)
-        {
-            [ZQUtils showAlert:[error localizedDescription]];
-        }else{
-            if (contextDidSave == YES) {
-                
-                [ZQUtils showAlert:@"删除成功"];
-                [self viewWillAppear:NO];
-            }else{
-                
-                [ZQUtils showAlert:@"删除失败，请重试"];
-            }
-        }
-    }];
-}
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return @"删除";
-}
+/*
 
+*/
 
 /*
 // Override to support conditional editing of the table view.

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoanInfo.h"
 
 @interface ZQLoanVC : UITableViewController
+
+@property (nonatomic, strong) LoanInfo *paramsInfo;
 
 @end

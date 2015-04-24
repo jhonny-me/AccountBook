@@ -14,7 +14,7 @@
 
 NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
+@interface ZQLoanVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 {
     __weak IBOutlet UITextField *_nameTF;
     __weak IBOutlet UITextField *_numberTF;
@@ -33,9 +33,14 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     __weak IBOutlet UIButton *_repayBtn;   //还债
     __weak IBOutlet UIButton *_collectBtn; //收债
     
+    // 顶部button的数组
+    NSMutableArray *_statusBtnArray;
+    
     __weak IBOutlet UIButton *_deleteBtn;
     // 应收账款，应付账款
     NSString *_getOrGive;
+    // 标识借入、借出、还债、收债
+    NSString *_category;
 }
 
 @end
@@ -45,6 +50,13 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    [self loadZQLoanVCData];
+//    [self loadZQLoanVCUI];
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
     [self loadZQLoanVCData];
     [self loadZQLoanVCUI];
 }
@@ -52,17 +64,37 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 - (void) loadZQLoanVCUI{
     
-    _borrowBtn.tag  = 1;
-    _loanoutBtn.tag = 2;
-    _repayBtn.tag   = 3;
-    _collectBtn.tag = 4;
+    if (self.paramsInfo) {
+        
+        [self setLbStatusWithCategory:self.paramsInfo.category];
+        
+        _deleteBtn.hidden = NO;
+        _numberTF.text = [NSString stringWithFormat:@"%@",self.paramsInfo.amount];
+        _nameTF.text = self.paramsInfo.name;
+        _accountTF.text = self.paramsInfo.account;
+        _dateTF.text = self.paramsInfo.date;
+        _remarkTextView.text = self.paramsInfo.remark;
+        if (!self.paramsInfo.photo) {
+            [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+        }else{
+            [_cameraBtn setImage:self.paramsInfo.photo forState:UIControlStateNormal];
+        }
+    }else{
     
+    _category = @"借入";
+    _getOrGive = @"应付账款";
     _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
     [self customizeKeyboards];
+    }
 }
 
 - (void) loadZQLoanVCData{
     
+    _borrowBtn.tag  = 1;
+    _loanoutBtn.tag = 2;
+    _repayBtn.tag   = 3;
+    _collectBtn.tag = 4;
+    _statusBtnArray = [NSMutableArray arrayWithObjects:_borrowBtn,_loanoutBtn,_repayBtn,_collectBtn, nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -179,6 +211,73 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 #pragma mark - Private methods
 
+- (void) setLbStatusWithCategory:(NSString*)category{
+    
+    int selectNumber = 0;
+    if ([self.paramsInfo.category isEqualToString:@"借入"]) {
+        
+        selectNumber =1;
+    }else if([self.paramsInfo.category isEqualToString:@"借出"]){
+        
+        selectNumber =2;
+    }else if ([self.paramsInfo.category isEqualToString:@"还债"]){
+        
+        selectNumber =3;
+    }else if([self.paramsInfo.category isEqualToString:@"收债"]){
+        
+        selectNumber =4;
+    }
+    
+    for (int i=0;i<4;i++) {
+        if (i+1 == selectNumber) {
+        
+            [_statusBtnArray[i] setBackgroundColor:[UIColor darkGrayColor]];
+        }else{
+        
+            [_statusBtnArray[i] setBackgroundColor:[UIColor lightGrayColor]];
+        }
+    }
+
+    switch (selectNumber) {
+        case 1:
+            
+            _category = @"借入";
+            _getOrGive = @"应付账款";
+            _moneycolorLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+            _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+            
+            break;
+        case 2:
+            
+            _category = @"借出";
+            _getOrGive = @"应收帐款";
+            _moneycolorLb.textColor = [UIColor redColor];
+            _numberTF.textColor = [UIColor redColor];
+            
+            
+            break;
+        case 3:
+            _category = @"还债";
+            _getOrGive = @"应付账款";
+            _moneycolorLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+            _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
+            
+            break;
+        case 4:
+            
+            _category = @"收债";
+            _getOrGive = @"应收帐款";
+            _moneycolorLb.textColor = [UIColor redColor];
+            _numberTF.textColor = [UIColor redColor];
+            
+            break;
+            
+        default:
+            break;
+    }
+
+}
+
 - (void)takePicture: (BOOL)isCamera
 {
     //    _selectedAvatarType = TIPRITEPHOTO;
@@ -260,27 +359,8 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 #pragma mark - Button events
 
 - (IBAction)statusBtn_Pressed:(UIButton*)sender {
-    for (int i=1; i<5; i++) {
-        UIButton *button = (UIButton *)[self.view viewWithTag:i];
-        if (i == sender.tag) {
-            button.backgroundColor = [UIColor darkGrayColor];
-        }
-        else{
-            button.backgroundColor = [UIColor lightGrayColor];
-        }
-    }
-    
-    if (sender.tag == 1 || sender.tag == 3) {
-    
-        _getOrGive = @"应付账款";
-        _moneycolorLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
-        _numberTF.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
-    }else{
-    
-        _getOrGive = @"应收帐款";
-        _moneycolorLb.textColor = [UIColor redColor];
-        _numberTF.textColor = [UIColor redColor];
-    }
+
+    [self setLbStatusWithCategory:sender.titleLabel.text];
 }
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
@@ -326,7 +406,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     LoanInfo *info = [LoanInfo MR_createEntity];
     info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
     info.photo     = _cameraBtn.imageView.image;
-    info.category  = _getOrGive;
+    info.category  = _category;
     info.account   = _accountTF.text;
     info.date      = _dateTF.text;
     info.remark    = _remarkTextView.text;

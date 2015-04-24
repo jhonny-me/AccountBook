@@ -32,6 +32,7 @@
 - (void) loadZQMainVCData{
 
     _zqInfo = [ZQInformation Info];
+    [_zqInfo loadDataBaseLoanInfoStatisticsWithYear:@"2015"];
 }
 
 - (void) loadZQMainVCUI{

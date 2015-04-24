@@ -40,6 +40,7 @@ static ZQInformation* zqInfomation;
 {
 
     self.sortByMonthInArray = [[NSMutableDictionary alloc]init];
+    self.sortByNameInArray  = [[NSMutableDictionary alloc]init];
     
     // 获取当前年份
     NSString *currentYear = [[ZQUtils stringFromDate:[NSDate date]] substringWithRange:NSMakeRange(0, 4)];
@@ -51,6 +52,7 @@ static ZQInformation* zqInfomation;
 // 按年读取收入支出数据库并按月存
 
 - (void) loadDataBaseInformationStatisticsWithYear:(NSString *)year{
+    [self.sortByMonthInArray removeAllObjects];
     // 当年收入与支出总额
     float yearAllIn = 0;
     float yearAllOut = 0;
@@ -89,6 +91,7 @@ static ZQInformation* zqInfomation;
 
 - (void) loadDataBaseLoanInfoStatisticsWithYear:(NSString *)year{
 
+    [self.sortByNameInArray removeAllObjects];
     // 当年应收与应付总额
     float yearAllShouldGive = 0;
     float yearAllShouldGet = 0;
@@ -98,8 +101,10 @@ static ZQInformation* zqInfomation;
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",pre];
     NSMutableArray *needSortArray = [[NSMutableArray alloc]init];
     
-    needSortArray =[NSMutableArray arrayWithArray:[LoanInfo MR_fetchAllGroupedBy:@"name" withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
-    
+    needSortArray = [NSMutableArray arrayWithArray:[LoanInfo MR_findAllSortedBy:@"name,date" ascending:YES withPredicate:predicate]];
+//    needSortArray =[NSMutableArray arrayWithArray:[LoanInfo MR_fetchAllGroupedBy:@"name" withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
+//    
+//    NSArray *people = [Person MR_executeFetchRequest:peopleRequest];
     NSMutableArray *currentArray = [[NSMutableArray alloc]init];
     // 如果数据库中没有借贷信息。
     if (!needSortArray.count) {
@@ -149,7 +154,7 @@ static ZQInformation* zqInfomation;
 
 }
 
-// 将每月的数组计算总支出与总收入并打包为字典传回
+// 将每人的数组计算总应付与总应收并打包为字典传回
 - (NSDictionary *)getLoanMonthlyDictionaryWithArray:(NSMutableArray*)array{
     // 总应收
     float allShouldGet = 0;
@@ -171,7 +176,7 @@ static ZQInformation* zqInfomation;
     allSurplus = allShouldGet - allShouldGive;
     // 打包数据
     NSDictionary *dic = @{
-                          @"array":array,
+                          @"array":[array mutableCopy],
                           @"allShouldGet":[NSNumber numberWithFloat:allShouldGet],
                           @"allShouldGive":[NSNumber numberWithFloat:allShouldGive],
                           @"allSurplus":[NSNumber numberWithFloat:allSurplus]
@@ -179,7 +184,7 @@ static ZQInformation* zqInfomation;
     return dic;
 }
 
-// 将每人的数组计算总支出与总收入并打包为字典传回
+// 将每月的数组计算总支出与总收入并打包为字典传回
 - (NSDictionary *)getMonthlyDictionaryWithArray:(NSMutableArray*)array{
     // 总收入
     float allIn = 0;
@@ -201,7 +206,7 @@ static ZQInformation* zqInfomation;
     allSurplus = allIn - allOut;
     // 打包数据
     NSDictionary *dic = @{
-                          @"array":array,
+                          @"array":[array mutableCopy],
                           @"allIn":[NSNumber numberWithFloat:allIn],
                           @"allOut":[NSNumber numberWithFloat:allOut],
                           @"allSurplus":[NSNumber numberWithFloat:allSurplus]
