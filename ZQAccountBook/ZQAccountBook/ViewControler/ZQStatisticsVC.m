@@ -8,14 +8,22 @@
 
 #import "ZQStatisticsVC.h"
 #import "PieChartView.h"
+#import "ZQInformation.h"
+#import "ZQUtils.h"
+#import "CoreData+MagicalRecord.h"
 
 #define PIE_HEIGHT 280
 
-@interface ZQStatisticsVC ()
+@interface ZQStatisticsVC ()<PieChartDelegate>
+{
+    ZQInformation *_zqInfo;
+}
 @property (nonatomic,strong) NSMutableArray *valueArray;
 @property (nonatomic,strong) NSMutableArray *colorArray;
+@property (nonatomic,strong) NSMutableArray *categoryArray;
 @property (nonatomic,strong) NSMutableArray *valueArray2;
 @property (nonatomic,strong) NSMutableArray *colorArray2;
+@property (nonatomic,strong) NSMutableArray *categoryArray2;
 @property (nonatomic,strong) PieChartView *pieChartView;
 @property (nonatomic,strong) UIView *pieContainer;
 @property (nonatomic)BOOL inOut;
@@ -37,20 +45,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self loadZQStatisticsVCData];
+    
     self.inOut = YES;
+    // 支出数组
     self.valueArray = [[NSMutableArray alloc] initWithObjects:
-                       [NSNumber numberWithInt:2],
-                       [NSNumber numberWithInt:3],
-                       [NSNumber numberWithInt:2],
-                       [NSNumber numberWithInt:3],
-                       [NSNumber numberWithInt:3],
-                       [NSNumber numberWithInt:4],
+                       [NSNumber numberWithFloat:0],
+                       [NSNumber numberWithFloat:0],
+                       [NSNumber numberWithFloat:0],
+                       [NSNumber numberWithFloat:0],
+                       [NSNumber numberWithFloat:0],
+                       [NSNumber numberWithFloat:0],
                        nil];
+    // 收入数组
     self.valueArray2 = [[NSMutableArray alloc] initWithObjects:
-                        [NSNumber numberWithInt:3],
-                        [NSNumber numberWithInt:2],
-                        [NSNumber numberWithInt:2],
+                        [NSNumber numberWithFloat:0],
+                        [NSNumber numberWithFloat:0],
+                        [NSNumber numberWithFloat:0],
+                        [NSNumber numberWithFloat:0],
                         nil];
+    self.categoryArray2 = [[NSMutableArray alloc]initWithObjects:@"工资",@"兼职",@"理财收益",@"其他", nil];
     
     self.colorArray = [NSMutableArray arrayWithObjects:
                        [UIColor colorWithHue:((0/8)%20)/20.0+0.02 saturation:(0%8+3)/10.0 brightness:91/100.0 alpha:1],
@@ -64,8 +79,11 @@
                         [UIColor purpleColor],
                         [UIColor orangeColor],
                         [UIColor magentaColor],
+                        [UIColor redColor],
                         nil];
+    self.categoryArray = [[NSMutableArray alloc]initWithObjects:@"服饰",@"餐饮",@"居家",@"交通",@"其他", nil];
     
+    [self loadDBAndSortInArray];
     //add shadow img
     CGRect pieFrame = CGRectMake((self.view.frame.size.width - PIE_HEIGHT) / 2, 100, PIE_HEIGHT, PIE_HEIGHT);
     
@@ -78,7 +96,9 @@
     self.pieChartView = [[PieChartView alloc]initWithFrame:self.pieContainer.bounds withValue:self.valueArray withColor:self.colorArray];
     self.pieChartView.delegate = self;
     [self.pieContainer addSubview:self.pieChartView];
-    [self.pieChartView setAmountText:@"-2456.0"];
+    float yearAllOut = [_zqInfo.sortByMonthInArray[@"支出总额"] floatValue];
+    [self.pieChartView setTitleText:@"支出总计"];
+    [self.pieChartView setAmountText:[NSString stringWithFormat:@"－%.2f",yearAllOut]];
     [self.view addSubview:self.pieContainer];
     
     //add selected view
@@ -96,6 +116,14 @@
     [self.pieChartView setTitleText:@"支出总计"];
     self.title = @"对账单";
     self.view.backgroundColor = [self colorFromHexRGB:@"f3f3f3"];
+    
+
+}
+
+- (void) loadZQStatisticsVCData{
+
+    _zqInfo = [ZQInformation Info];
+    [_zqInfo loadDataBaseInformationStatisticsWithYear:[[ZQUtils getCurrentYearAndMonth] substringWithRange:NSMakeRange(0, 4)]];
 }
 
 - (UIColor *) colorFromHexRGB:(NSString *) inColorString
@@ -122,7 +150,11 @@
 
 - (void)selectedFinish:(PieChartView *)pieChartView index:(NSInteger)index percent:(float)per
 {
-    self.selLabel.text = [NSString stringWithFormat:@"%2.2f%@",per*100,@"%"];
+    if (self.inOut) {
+         self.selLabel.text = [NSString stringWithFormat:@"%@%2.2f%@",self.categoryArray[index],per*100,@"%"];
+    }else{
+        self.selLabel.text = [NSString stringWithFormat:@"%@%2.2f%@",self.categoryArray2[index],per*100,@"%"];
+    }
 }
 
 - (void)onCenterClick:(PieChartView *)pieChartView
@@ -136,12 +168,14 @@
     [self.pieChartView reloadChart];
     
     if (self.inOut) {
+        float yearAllOut = [_zqInfo.sortByMonthInArray[@"支出总额"] floatValue];
         [self.pieChartView setTitleText:@"支出总计"];
-        [self.pieChartView setAmountText:@"-2456.0"];
+        [self.pieChartView setAmountText:[NSString stringWithFormat:@"－%.2f",yearAllOut]];
         
     }else{
+        float yearAllIn = [_zqInfo.sortByMonthInArray[@"收入总额"] floatValue];
         [self.pieChartView setTitleText:@"收入总计"];
-        [self.pieChartView setAmountText:@"+567.23"];
+        [self.pieChartView setAmountText:[NSString stringWithFormat:@"+%.2f",yearAllIn]];
     }
 }
 
@@ -153,6 +187,61 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - load statistics And sort in array
+
+- (void) loadDBAndSortInArray{
+    
+    NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"type == '收入'"];
+    NSArray *_allInfoArray2 = [Information MR_findAllSortedBy:@"date" ascending:YES withPredicate:predicate2];
+    
+    for (Information *info in _allInfoArray2) {
+        int i = 0;
+        if ([info.category isEqualToString:@"工资"]) {
+            
+            i = 0;
+        }else if ([info.category isEqualToString:@"兼职"]){
+        
+            i = 1;
+        }else if ([info.category isEqualToString:@"理财收益"]){
+        
+            i = 2;
+        }else{// 其他
+            
+            i = 3;
+        }
+        float oldValue = [[self.valueArray2 objectAtIndex:i] floatValue];
+        oldValue += [info.amount floatValue];
+        self.valueArray2[i] = [NSNumber numberWithFloat:oldValue];
+    }
+    
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"type == '支出'"];
+    NSArray *_allInfoArray = [Information MR_findAllSortedBy:@"date" ascending:YES withPredicate:predicate];
+   
+    for (Information *info in _allInfoArray) {
+        int i = 0;
+        if ([info.category isEqualToString:@"服饰"]) {
+            
+            i = 0;
+        }else if ([info.category isEqualToString:@"餐饮"]){
+            
+            i = 1;
+        }else if ([info.category isEqualToString:@"居家"]){
+            
+            i = 2;
+        }else if ([info.category isEqualToString:@"交通"]){
+            
+            i = 3;
+        }else{// 其他
+        
+            i = 4;
+        }
+        float oldValue = [[self.valueArray objectAtIndex:i] floatValue];
+        oldValue += [info.amount floatValue];
+        self.valueArray[i] = [NSNumber numberWithFloat:oldValue];
+    }
+
 }
 
 /*
