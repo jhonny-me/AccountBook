@@ -41,6 +41,9 @@
 		4F628E6B1AE3A15C00331A17 /* ZQDetailSectionRowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F628E691AE3A15C00331A17 /* ZQDetailSectionRowCell.m */; };
 		4F628E6C1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F628E6A1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib */; };
 		4F628E6F1AE3EEFC00331A17 /* ZQInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F628E6E1AE3EEFC00331A17 /* ZQInformation.m */; };
+		4F79F6891AEA959F00424D2B /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F79F6841AEA959F00424D2B /* PieChartView.m */; };
+		4F79F68A1AEA959F00424D2B /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F79F6861AEA959F00424D2B /* RenderView.m */; };
+		4F79F68B1AEA959F00424D2B /* RotatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F79F6881AEA959F00424D2B /* RotatedView.m */; };
 		4FB7AD351AE800DA009D9191 /* ZQPeopleNameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7AD341AE800DA009D9191 /* ZQPeopleNameVC.m */; };
 		4FE7A63A1ACF9F2D000704FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A6391ACF9F2D000704FC /* main.m */; };
 		4FE7A63D1ACF9F2D000704FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7A63C1ACF9F2D000704FC /* AppDelegate.m */; };
@@ -140,6 +143,12 @@
 		4F628E6A1AE3A15C00331A17 /* ZQDetailSectionRowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ZQDetailSectionRowCell.xib; path = ZQAccountBook/ViewControler/ZQDetailSectionRowCell.xib; sourceTree = SOURCE_ROOT; };
 		4F628E6D1AE3EEFC00331A17 /* ZQInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQInformation.h; sourceTree = "<group>"; };
 		4F628E6E1AE3EEFC00331A17 /* ZQInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQInformation.m; sourceTree = "<group>"; };
+		4F79F6831AEA959F00424D2B /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
+		4F79F6841AEA959F00424D2B /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
+		4F79F6851AEA959F00424D2B /* RenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderView.h; sourceTree = "<group>"; };
+		4F79F6861AEA959F00424D2B /* RenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
+		4F79F6871AEA959F00424D2B /* RotatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatedView.h; sourceTree = "<group>"; };
+		4F79F6881AEA959F00424D2B /* RotatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatedView.m; sourceTree = "<group>"; };
 		4FB7AD331AE800DA009D9191 /* ZQPeopleNameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQPeopleNameVC.h; sourceTree = "<group>"; };
 		4FB7AD341AE800DA009D9191 /* ZQPeopleNameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQPeopleNameVC.m; sourceTree = "<group>"; };
 		4FE7A6341ACF9F2D000704FC /* ZQAccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZQAccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,6 +318,19 @@
 			path = ZQDetailView;
 			sourceTree = "<group>";
 		};
+		4F79F6821AEA959F00424D2B /* ChartView */ = {
+			isa = PBXGroup;
+			children = (
+				4F79F6831AEA959F00424D2B /* PieChartView.h */,
+				4F79F6841AEA959F00424D2B /* PieChartView.m */,
+				4F79F6851AEA959F00424D2B /* RenderView.h */,
+				4F79F6861AEA959F00424D2B /* RenderView.m */,
+				4F79F6871AEA959F00424D2B /* RotatedView.h */,
+				4F79F6881AEA959F00424D2B /* RotatedView.m */,
+			);
+			path = ChartView;
+			sourceTree = "<group>";
+		};
 		4FE7A62B1ACF9F2D000704FC = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +404,7 @@
 		4FE7A6631ACFC79C000704FC /* ViewControler */ = {
 			isa = PBXGroup;
 			children = (
+				4F79F6821AEA959F00424D2B /* ChartView */,
 				4F628E5A1AE3818800331A17 /* ZQDetailView */,
 				4FE7A6671ACFC83A000704FC /* ZQDetialVC.h */,
 				4FE7A6681ACFC83A000704FC /* ZQDetialVC.m */,
@@ -532,6 +555,7 @@
 				4F5D164F1AD276D600DB7EA0 /* NSNumber+MagicalDataImport.m in Sources */,
 				4F5D165C1AD276D600DB7EA0 /* NSManagedObjectContext+MagicalThreading.m in Sources */,
 				4F5D165D1AD276D600DB7EA0 /* NSManagedObjectModel+MagicalRecord.m in Sources */,
+				4F79F68A1AEA959F00424D2B /* RenderView.m in Sources */,
 				4FE7A6751ACFC905000704FC /* ZQLoanVC.m in Sources */,
 				4F5D16661AD276D600DB7EA0 /* MagicalRecord.m in Sources */,
 				4F5D166C1AD277BD00DB7EA0 /* Information.m in Sources */,
@@ -553,6 +577,7 @@
 				4F5D16651AD276D600DB7EA0 /* MagicalRecord+ShorthandSupport.m in Sources */,
 				4F0502971AE2664A001F8E3F /* LoanInfo.m in Sources */,
 				4F5D16571AD276D600DB7EA0 /* NSManagedObject+MagicalRequests.m in Sources */,
+				4F79F68B1AEA959F00424D2B /* RotatedView.m in Sources */,
 				4F5D165E1AD276D600DB7EA0 /* NSPersistentStore+MagicalRecord.m in Sources */,
 				4FE7A66F1ACFC8B4000704FC /* ZQStatisticsVC.m in Sources */,
 				4F5D165B1AD276D600DB7EA0 /* NSManagedObjectContext+MagicalSaves.m in Sources */,
@@ -560,6 +585,7 @@
 				4F5D16511AD276D600DB7EA0 /* NSRelationshipDescription+MagicalDataImport.m in Sources */,
 				4FE7A67B1ACFC942000704FC /* ZQOutlayVC.m in Sources */,
 				4F5D16501AD276D600DB7EA0 /* NSObject+MagicalDataImport.m in Sources */,
+				4F79F6891AEA959F00424D2B /* PieChartView.m in Sources */,
 				4F5D16611AD276D600DB7EA0 /* MagicalRecord+ErrorHandling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
