@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Ti5-Sj-zq2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Ti5-Sj-zq2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--PeopleDetailVC-->
@@ -38,13 +38,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xrl-UC-pV3">
+                        <button opaque="NO" tag="601" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xrl-UC-pV3">
                             <rect key="frame" x="4" y="5" width="23" height="31"/>
                             <state key="normal" image="returnArrow">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="backYearBtn_Pressed:" destination="WQT-Wk-ke4" eventType="touchUpInside" id="rMN-uW-sXY"/>
+                                <action selector="yearChangeBtn_Pressed:" destination="WQT-Wk-ke4" eventType="touchUpInside" id="UmB-7P-tmm"/>
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2015年" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0la-da-1Gh">
@@ -58,7 +58,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="forwardYearBtn_Pressed:" destination="WQT-Wk-ke4" eventType="touchUpInside" id="cDt-Z3-B1l"/>
+                                <action selector="yearChangeBtn_Pressed:" destination="WQT-Wk-ke4" eventType="touchUpInside" id="kkG-Am-GO6"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7b-0N-d2g">
@@ -147,11 +147,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iFk-oV-Tns">
+                        <button opaque="NO" tag="701" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iFk-oV-Tns">
                             <rect key="frame" x="4" y="5" width="23" height="31"/>
                             <state key="normal" image="returnArrow">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="yearChangeBtn_Pressed:" destination="C39-Zi-wZH" eventType="touchUpInside" id="JjO-gh-tqi"/>
+                            </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2015年" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RWl-gm-gjk">
                             <rect key="frame" x="24" y="6" width="60" height="30"/>
@@ -163,6 +166,9 @@
                             <state key="normal" image="rightArrow">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="yearChangeBtn_Pressed:" destination="C39-Zi-wZH" eventType="touchUpInside" id="XAE-u8-Hfp"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OED-GV-M3c">
                             <rect key="frame" x="10" y="34" width="88" height="1"/>

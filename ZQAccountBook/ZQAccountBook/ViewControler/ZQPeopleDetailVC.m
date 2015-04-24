@@ -10,6 +10,7 @@
 #import "ZQInformation.h"
 #import "ZQDetailSectionRowCell.h"
 #import "ZQLoanVC.h"
+#import "CoreData+MagicalRecord.h"
 
 @interface ZQPeopleDetailVC ()
 {
@@ -36,11 +37,14 @@
 
 - (void) loadZQPeopleDetailVCUI
 {
+    if (!_infoArray.count) {
+        _allShouldGiveLb.text = @"￥0.00";
+        _allShouldGetLb.text  = @"￥0.00";
+        return;
+    }
     
     _allShouldGetLb.text = [NSString stringWithFormat:@"%@",[_selectedDic objectForKey:@"allShouldGet"]];
     _allShouldGiveLb.text = [NSString stringWithFormat:@"%@",[_selectedDic objectForKey:@"allShouldGive"]];
-    
-    
 }
 
 - (void) loadZQPeopleNameVCData{
@@ -112,12 +116,58 @@
     
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    LoanInfo *info = _infoArray[indexPath.row];
+    // NSString *predicateStr = _dateTF.text;
+    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"self == %@",info];
+    NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+    LoanInfo* foundInfo = [findArray firstObject];
+    [foundInfo MR_deleteEntity];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"删除成功"];
+                [self viewWillAppear:NO];
+            }else{
+                
+                [ZQUtils showAlert:@"删除失败，请重试"];
+            }
+        }
+    }];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return @"删除";
+}
+
+
 
 #pragma mark - Button Events
-- (IBAction)backYearBtn_Pressed:(id)sender {
+
+- (IBAction)yearChangeBtn_Pressed:(UIButton*)sender {
+    
+    int year = [[_headerYearTF.text stringByReplacingOccurrencesOfString:@"年 " withString:@""] integerValue];
+    
+    if (sender.tag == 601) {
+        year--;
+    }else{
+        year++;
+    }
+    _headerYearTF.text = [NSString stringWithFormat:@"%d年",year];
+    [self viewWillAppear:NO];
 }
-- (IBAction)forwardYearBtn_Pressed:(id)sender {
-}
+
 
 
 /*

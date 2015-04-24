@@ -284,8 +284,7 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
 }
 - (IBAction)deleteBtn_Pressed:(id)sender {
     
-    NSString *predicateStr = _dateTF.text;
-    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"date == %@",predicateStr];
+    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"self == %@",self.paramsInfo];
     NSArray *findArray =[Information MR_findAllWithPredicate:(NSPredicate *)searchTerm];
     Information* info = [findArray firstObject];
     [info MR_deleteEntity];

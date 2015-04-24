@@ -214,16 +214,16 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 - (void) setLbStatusWithCategory:(NSString*)category{
     
     int selectNumber = 0;
-    if ([self.paramsInfo.category isEqualToString:@"借入"]) {
+    if ([category isEqualToString:@"借入"]) {
         
         selectNumber =1;
-    }else if([self.paramsInfo.category isEqualToString:@"借出"]){
+    }else if([category isEqualToString:@"借出"]){
         
         selectNumber =2;
-    }else if ([self.paramsInfo.category isEqualToString:@"还债"]){
+    }else if ([category isEqualToString:@"还债"]){
         
         selectNumber =3;
-    }else if([self.paramsInfo.category isEqualToString:@"收债"]){
+    }else if([category isEqualToString:@"收债"]){
         
         selectNumber =4;
     }
@@ -390,6 +390,27 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     [cameraSheet showInView:self.view];
 }
 - (IBAction)deleteBtn_Pressed:(id)sender {
+    
+    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"self == %@",self.paramsInfo];
+    NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+    LoanInfo* foundInfo = [findArray firstObject];
+    [foundInfo MR_deleteEntity];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+        if(error)
+        {
+            [ZQUtils showAlert:[error localizedDescription]];
+        }else{
+            if (contextDidSave == YES) {
+                
+                [ZQUtils showAlert:@"删除成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                
+                [ZQUtils showAlert:@"删除失败，请重试"];
+            }
+        }
+    }];
+
 }
 
 - (IBAction)saveBtn_Pressed:(id)sender {

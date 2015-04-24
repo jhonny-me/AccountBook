@@ -41,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ZQAccountBook/models/ZQInformation.m"
-            timestampString = "451499171.103078"
+            filePath = "ZQAccountBook/ViewControler/ZQLoanVC.m"
+            timestampString = "451570940.757681"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "-loadDataBaseLoanInfoStatisticsWithYear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZQAccountBook/models/ZQInformation.m"
-            timestampString = "451501288.211337"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "-loadDataBaseLoanInfoStatisticsWithYear:"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "-statusBtn_Pressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

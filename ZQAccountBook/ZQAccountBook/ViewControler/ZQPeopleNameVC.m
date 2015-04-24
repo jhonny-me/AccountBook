@@ -13,11 +13,13 @@
 #import "CoreData+MagicalRecord.h"
 #import "ZQPeopleDetailVC.h"
 
-@interface ZQPeopleNameVC ()
+@interface ZQPeopleNameVC ()<UIAlertViewDelegate>
 {
 
     ZQInformation *_zqInfo;
     NSArray *_nameArray;
+    
+    NSString *_selectedName;
 }
 
 @end
@@ -38,7 +40,11 @@
 {
     [self.tableView setTableHeaderView:_headView];
     
-    
+    if (!_nameArray.count) {
+        _shouldGiveLb.text = @"￥0.00";
+        _shouldGetLb.text  = @"￥0.00";
+        return;
+    }
     _shouldGetLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByNameInArray objectForKey:@"应收总额"]];
     _shouldGiveLb.text = [NSString stringWithFormat:@"%@",[_zqInfo.sortByNameInArray objectForKey:@"应付总额"]];
     
@@ -92,14 +98,16 @@
     cell.textLabel.text = name;
     NSDictionary *dic = [[_zqInfo.sortByNameInArray objectForKey:name] mutableCopy];
     
-    if (dic[@"allSurplus"] < [NSNumber numberWithFloat:0]) {
+    float allSurplus = [dic[@"allSurplus"] floatValue];
+    if (allSurplus <0) {
         
         cell.detailTextLabel.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"应付%@",dic[@"allSurplus"]];
+        allSurplus = 0 - allSurplus;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"应付%.2f",allSurplus];
     }else{
     
         cell.detailTextLabel.textColor = [UIColor redColor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"应收%@",dic[@"allSurplus"]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"应收%.2f",allSurplus];
     }
 
     
@@ -120,30 +128,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *name = _nameArray[indexPath.row];
-    // NSString *predicateStr = _dateTF.text;
-    NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"name == %@",name];
-    NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+     _selectedName = _nameArray[indexPath.row];
     
-    for (LoanInfo* info in findArray) {
-        [info MR_deleteEntity];
-    }
-    
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
-        if(error)
-        {
-            [ZQUtils showAlert:[error localizedDescription]];
-        }else{
-            if (contextDidSave == YES) {
-                
-                [ZQUtils showAlert:@"删除成功"];
-                [self viewWillAppear:NO];
-            }else{
-                
-                [ZQUtils showAlert:@"删除失败，请重试"];
-            }
-        }
-    }];
+    UIAlertView *alart = [[UIAlertView alloc]initWithTitle:nil message:@"与该借贷人有关的信息都将删除，是否继续？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续", nil];
+    [alart show];
+
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -151,7 +140,53 @@
     return @"删除";
 }
 
+#pragma mark - Button Events
 
+- (IBAction)yearChangeBtn_Pressed:(UIButton*)sender {
+    
+    int year = [[_headerYearTF.text stringByReplacingOccurrencesOfString:@"年" withString:@""] integerValue];
+    
+    if (sender.tag == 701) {
+        year--;
+    }else{
+        year++;
+    }
+    _headerYearTF.text = [NSString stringWithFormat:@"%d年",year];
+    [self viewWillAppear:NO];
+}
+
+#pragma mark - uiAlartView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex == 1) {
+        NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"name == %@",_selectedName];
+        NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+        
+        for (LoanInfo* info in findArray) {
+            [info MR_deleteEntity];
+        }
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
+            if(error)
+            {
+                [ZQUtils showAlert:[error localizedDescription]];
+            }else{
+                if (contextDidSave == YES) {
+                    
+                    [ZQUtils showAlert:@"删除成功"];
+                    [self viewWillAppear:NO];
+                }else{
+                    
+                    [ZQUtils showAlert:@"删除失败，请重试"];
+                }
+            }
+        }];
+    }else{
+    
+        [self viewWillAppear:NO];
+    }
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
