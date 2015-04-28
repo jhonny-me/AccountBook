@@ -213,6 +213,17 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 #pragma mark - Private methods
 
+- (void) setEverythingBackToOrignal{
+    
+    _numberTF.text = @"0.00";
+    _categoryTF.text = @"工资";
+    _accountTF.text = @"现金";
+    _dateTF.text =[ZQUtils stringFromDate:[NSDate date]];
+    _remarkTextView.text = @"";
+    [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+    
+}
+
 - (void)takePicture: (BOOL)isCamera
 {
 //    _selectedAvatarType = TIPRITEPHOTO;
@@ -337,6 +348,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
             if (contextDidSave == YES) {
             
                 [ZQUtils showAlert:@"保存成功"];
+                [self setEverythingBackToOrignal];
             }else{
             
                 [ZQUtils showAlert:@"保存失败，请重试"];

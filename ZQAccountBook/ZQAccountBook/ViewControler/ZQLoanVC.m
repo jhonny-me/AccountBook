@@ -215,6 +215,20 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 #pragma mark - Private methods
 
+- (void) setEverythingBackToOrignal{
+
+    
+    [self setLbStatusWithCategory:@"借入"];
+    
+    _numberTF.text = @"0.00";
+    _nameTF.text = @"";
+    _accountTF.text = @"现金";
+    _dateTF.text =[ZQUtils stringFromDate:[NSDate date]];
+    _remarkTextView.text = @"";
+    [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
+
+}
+
 - (void) setLbStatusWithCategory:(NSString*)category{
     
     int selectNumber = 0;
@@ -449,6 +463,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
             if (contextDidSave == YES) {
                 
                 [ZQUtils showAlert:@"保存成功"];
+                [self setEverythingBackToOrignal];
             }else{
                 
                 [ZQUtils showAlert:@"保存失败，请重试"];
