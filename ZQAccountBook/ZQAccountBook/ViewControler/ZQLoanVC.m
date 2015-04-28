@@ -69,7 +69,11 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         [self setLbStatusWithCategory:self.paramsInfo.category];
         
         _deleteBtn.hidden = NO;
-        _numberTF.text = [NSString stringWithFormat:@"%@",self.paramsInfo.amount];
+        float amount = self.paramsInfo.amount.floatValue;
+        if (amount < 0.0) {
+            amount = 0 - amount;
+        }
+        _numberTF.text = [NSString stringWithFormat:@"%.2f",amount];
         _nameTF.text = self.paramsInfo.name;
         _accountTF.text = self.paramsInfo.account;
         _dateTF.text = self.paramsInfo.date;
@@ -424,8 +428,12 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         [ZQUtils showAlert:@"请输入借贷人姓名！"];
         return;
     }
+    float amount = _numberTF.text.floatValue;
+    if ([_category isEqualToString:@"还债"] || [_category isEqualToString:@"借出"]) {
+        amount = 0.0 - amount;
+    }
     LoanInfo *info = [LoanInfo MR_createEntity];
-    info.amount    = [NSNumber numberWithFloat:_numberTF.text.floatValue];
+    info.amount    = [NSNumber numberWithFloat:amount];
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _category;
     info.account   = _accountTF.text;

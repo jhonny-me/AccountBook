@@ -102,7 +102,11 @@
         
         cell.amountLb.textColor = [UIColor redColor];
     }
-    cell.amountLb.text = [NSString stringWithFormat:@"%@",info.amount];
+    float amount = info.amount.floatValue;
+    if (amount < 0.0) {
+        amount = 0 - amount;
+    }
+    cell.amountLb.text = [NSString stringWithFormat:@"%.2f",amount];
     return cell;
 }
 
