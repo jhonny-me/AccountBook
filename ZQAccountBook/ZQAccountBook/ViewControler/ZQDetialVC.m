@@ -201,21 +201,21 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 {
     NSLog(@"PickerView - DidSelectRow at %ld, %ld", (long)component, (long)row);
     
-    NSString *year = [[NSString alloc]init];
-    NSString *month = [[NSString alloc]init];
-    if (component ==0) {
-    
-        year = yearArray[row];
-        int index = [pickerView selectedRowInComponent:1];
-        month = monthArray[index];
-    }else{
-    
-        month = monthArray[row];
-        int index = [pickerView selectedRowInComponent:0];
-        year = yearArray[index];
-    }
-    
-    _choosedYearAndMonth = [[year stringByAppendingString:month] mutableCopy];
+//    NSString *year = [[NSString alloc]init];
+//    NSString *month = [[NSString alloc]init];
+//    if (component ==0) {
+//    
+//        year = yearArray[row];
+//        int index = [pickerView selectedRowInComponent:1];
+//        month = monthArray[index];
+//    }else{
+//    
+//        month = monthArray[row];
+//        int index = [pickerView selectedRowInComponent:0];
+//        year = yearArray[index];
+//    }
+//    
+//    _choosedYearAndMonth = [[year stringByAppendingString:month] mutableCopy];
 }
 
 #pragma mark - TextField Delegate
@@ -224,6 +224,15 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 
     
     [_headYearTF resignFirstResponder];
+    
+    NSString *year = [[NSString alloc]init];
+    NSString *month = [[NSString alloc]init];
+    int index = [_datePicker selectedRowInComponent:0];
+    year = yearArray[index];
+    index = [_datePicker selectedRowInComponent:1];
+    month = monthArray[index];
+    _choosedYearAndMonth = [[year stringByAppendingString:month] mutableCopy];
+
     _headYearTF.text = _choosedYearAndMonth;
     [self viewWillAppear:NO];
 }
