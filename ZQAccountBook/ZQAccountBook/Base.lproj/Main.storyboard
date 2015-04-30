@@ -408,7 +408,7 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="qTg-fH-EHr" kind="push" id="PKz-4l-iq0"/>
+                                                        <action selector="chartBtn_Pressed:" destination="wa1-yG-oMs" eventType="touchUpInside" id="2t5-fF-Xqf"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFF-tH-bax">
@@ -440,6 +440,7 @@
                         <outlet property="_allOutLb" destination="3jj-39-iRV" id="ABu-nz-JK2"/>
                         <outlet property="_monthLb" destination="QSV-Zs-eQX" id="nhk-AB-0xD"/>
                         <outlet property="_yearLb" destination="n5L-0L-p0q" id="TFp-T7-f67"/>
+                        <segue destination="qTg-fH-EHr" kind="push" identifier="SegueToStatisticsVC" id="pfX-xd-z8l"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ba-1B-Jpd" userLabel="First Responder" sceneMemberID="firstResponder"/>

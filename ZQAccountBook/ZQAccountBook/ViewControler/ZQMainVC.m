@@ -60,6 +60,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (IBAction)chartBtn_Pressed:(id)sender {
+    
+    NSNumber* allIn = [_zqInfo.sortByMonthInArray objectForKey:@"收入总额"];
+    NSNumber *allOut = [_zqInfo.sortByMonthInArray objectForKey:@"支出总额"];
+    
+    if (allOut.floatValue == 0.0) {
+        
+        [ZQUtils showAlert:@"要统计，先记帐～～"];
+        return;
+    }
+    [self performSegueWithIdentifier:@"SegueToStatisticsVC" sender:self];
+}
+
+
+
+
 #pragma mark - Private Methods
 
 
