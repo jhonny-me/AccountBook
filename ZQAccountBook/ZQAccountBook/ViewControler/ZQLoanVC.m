@@ -443,7 +443,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         return;
     }
     float amount = _numberTF.text.floatValue;
-    if ([_category isEqualToString:@"还债"] || [_category isEqualToString:@"借出"]) {
+    if ([_category isEqualToString:@"还债"] || [_category isEqualToString:@"收债"]) {
         amount = 0.0 - amount;
     }
     LoanInfo *info = [LoanInfo MR_createEntity];
