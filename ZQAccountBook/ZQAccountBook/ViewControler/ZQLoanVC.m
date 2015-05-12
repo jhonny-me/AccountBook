@@ -64,20 +64,26 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 - (void) loadZQLoanVCUI{
     
+    // 如果是从借贷详情页跳转的，执行if中的语句
     if (self.paramsInfo) {
         
         [self setLbStatusWithCategory:self.paramsInfo.category];
         
         _deleteBtn.hidden = NO;
         float amount = self.paramsInfo.amount.floatValue;
+        
+        // 当读到的数据是负数时，将其转换为正数显示
         if (amount < 0.0) {
             amount = 0 - amount;
         }
         _numberTF.text = [NSString stringWithFormat:@"%.2f",amount];
+        
+        
         _nameTF.text = self.paramsInfo.name;
         _accountTF.text = self.paramsInfo.account;
         _dateTF.text = self.paramsInfo.date;
         _remarkTextView.text = self.paramsInfo.remark;
+        
         if (!self.paramsInfo.photo) {
             [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
         }else{
@@ -87,9 +93,9 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     
     _category = @"借入";
     _getOrGive = @"应付账款";
-    _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
-    [self customizeKeyboards];
+        _dateTF.text = [ZQUtils stringFromDate:[NSDate date]];
     }
+    [self customizeKeyboards];
 }
 
 - (void) loadZQLoanVCData{
@@ -307,7 +313,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         
         if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
             
-            //            [MPUtils showAlert: @"Camera isn't available."];
+            [ZQUtils showAlert: @"拍照暂不可用"];
             return;
         }
         
@@ -347,6 +353,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 #pragma mark - ActionSheet Delegate
 
+//
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     if (buttonIndex == 0) {
@@ -383,6 +390,7 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
     if (sender.tag == 1000) {
+        
         [_nameTF becomeFirstResponder];
     }else if (sender.tag == 1001) {
         
@@ -402,11 +410,15 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         [_remarkTextView resignFirstResponder];
     }
 }
+
+// 点击照片时调用的方法
 - (IBAction)cameraBtn_Pressed:(id)sender {
     
     UIActionSheet *cameraSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍照" otherButtonTitles:@"从相册选取", nil];
     [cameraSheet showInView:self.view];
 }
+
+
 - (IBAction)deleteBtn_Pressed:(id)sender {
     
     NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"self == %@",self.paramsInfo];

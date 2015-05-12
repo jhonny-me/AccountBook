@@ -113,7 +113,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     LoanInfo *info = _infoArray[indexPath.row];
-        
+    
+    // 将选择的数据传给将要显示的详情页面
     ZQLoanVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ZQLoanVC"];
     vc.paramsInfo = info;
     [self.navigationController pushViewController:vc animated:YES];

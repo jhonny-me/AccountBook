@@ -15,7 +15,7 @@ NSString *categorys[] = {@"工资",@"兼职",@"理财收益",@"其他"};
 
 NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其他"};
 
-@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
+@interface ZQIncomeVC ()<UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 {
     __weak IBOutlet UITextField *_categoryTF;
     __weak IBOutlet UITextField *_numberTF;
@@ -76,6 +76,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 #pragma mark - customizeKeyboards
 
+// 自定义键盘，都是使用的UIPickerView自定义的输入键盘。
 - (void) customizeKeyboards{
     // for number
     _numberTF.keyboardType = UIKeyboardTypeDecimalPad;
@@ -213,6 +214,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 #pragma mark - Private methods
 
+// 保存完成后调用该方法，将所有选项显示为初始状态
 - (void) setEverythingBackToOrignal{
     
     _numberTF.text = @"0.00";
@@ -224,9 +226,9 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     
 }
 
+// 选择照片或者拍照
 - (void)takePicture: (BOOL)isCamera
 {
-//    _selectedAvatarType = TIPRITEPHOTO;
     
     UIImagePickerController *picker = [UIImagePickerController new];
     picker.delegate = self;
@@ -235,7 +237,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
         
         if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
             
-//            [MPUtils showAlert: @"Camera isn't available."];
+            [ZQUtils showAlert:@"摄像头不可用"];
             return;
         }
         
@@ -249,6 +251,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
     [self presentViewController: picker animated: YES completion: nil];
 }
 
+// 照片选择完成后调用的方法
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
     [_cameraBtn setImage:image forState:UIControlStateNormal];
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -258,10 +261,10 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 
 - (IBAction)returnKey_Pressed:(UIBarButtonItem*)sender{
     if (sender.tag == 1000) {
+       
         [_categoryTF becomeFirstResponder];
     }else if (sender.tag == 1001) {
       
-  //      [_categoryTF resignFirstResponder];
         [_accountTF becomeFirstResponder];
     }else if (sender.tag == 1002){
         //如果是修改则到账户选择过后直接隐藏键盘
@@ -269,6 +272,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
             
             [_accountTF resignFirstResponder];
         }else{
+           
             [_dateTF becomeFirstResponder];
         }
     }else if (sender.tag == 1003){
@@ -340,6 +344,7 @@ NSString *accounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"其�
 //    info.name      = @"";
     info.type      = @"收入";
     
+        // 调用数据库的方法保存更改。
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
         if(error)
         {

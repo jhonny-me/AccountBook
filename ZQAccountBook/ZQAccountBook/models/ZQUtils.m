@@ -13,12 +13,14 @@
 
 #pragma mark - Alert
 
+// 显示一个提示框
 + (void)showAlert: (NSString*)message
 {
     UIAlertView *alertV = [[UIAlertView alloc] initWithTitle: @"ZQAccountBook" message: message delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil, nil];
     [alertV show];
 }
 
+// 将string 类型的日期转换为nsdate
 + (NSDate *)dateFromString:(NSString *)dateString{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -30,6 +32,7 @@
     return destDate;
 }
 
+// 将nsdate型的日期转换为string
 + (NSString *) stringFromDate:(NSDate*)fromDate{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -38,6 +41,7 @@
     return destString;
 }
 
+// 获取当前年月，格式为 yyyy年MM月
 + (NSString *) getCurrentYearAndMonth{
     
     NSDate *date = [NSDate date];

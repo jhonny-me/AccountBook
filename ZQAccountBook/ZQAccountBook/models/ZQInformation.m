@@ -61,6 +61,8 @@ static ZQInformation* zqInfomation;
         NSString *predicateStr;
         NSMutableArray *_infoMonthlyArray;
         NSString *preoperationStr;
+        
+        // 当月份为1-9月的时候在月份前要加上0来与数据库中的日期选项进行匹配，2015-05
         if (i<10) {
             
             preoperationStr = [NSString stringWithFormat:@"-0%d*",i];
@@ -68,20 +70,30 @@ static ZQInformation* zqInfomation;
             
             preoperationStr = [NSString stringWithFormat:@"-%d*",i];
         }
+        // 将年加上月
         predicateStr = [year stringByAppendingString:preoperationStr];
+        
+        // 设置筛选条件
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",predicateStr];
+        // 清楚数组中的所有元素来接受新取到的数据
         [_infoMonthlyArray removeAllObjects];
+        // 设置新的数据数组
         _infoMonthlyArray =[NSMutableArray arrayWithArray:[Information MR_fetchAllGroupedBy:nil withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
+        // 调用自定义的封装方法，将当月的总支出总收入与总结余还有当月数组一起打包为一个字典返回,key值为月份
         NSDictionary *dic =[[self getMonthlyDictionaryWithArray:_infoMonthlyArray]mutableCopy];
         NSString *key = [NSString stringWithFormat:@"%d月",i];
+        // 将月份数据字典添加到年份数组中
         [self.sortByMonthInArray setObject:dic forKey:key];
         
+        // 设置当年总收入支出
         yearAllIn += [[dic objectForKey:@"allIn"] floatValue];
         yearAllOut += [[dic objectForKey:@"allOut"] floatValue];
     }
     
+    // 将年总收入支出打包进当年字典
     [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllIn] forKey:@"收入总额"];
     [self.sortByMonthInArray setObject:[NSNumber numberWithFloat:yearAllOut] forKey:@"支出总额"];
+    // 调试用。
     if (self.sortByMonthInArray) {
         
     }
@@ -97,14 +109,15 @@ static ZQInformation* zqInfomation;
     float yearAllShouldGet = 0;
     
     NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+    // 借贷不需要按月份来保存，所以直接匹配年份
     NSString *pre = [year stringByAppendingString:@"*"];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"date like[cd] %@",pre];
+    
+    // 新建一个数组用来接收未按名字排序的数组
     NSMutableArray *needSortArray = [[NSMutableArray alloc]init];
     
     needSortArray = [NSMutableArray arrayWithArray:[LoanInfo MR_findAllSortedBy:@"name,date" ascending:YES withPredicate:predicate]];
-//    needSortArray =[NSMutableArray arrayWithArray:[LoanInfo MR_fetchAllGroupedBy:@"name" withPredicate:predicate sortedBy:@"date" ascending:YES].fetchedObjects];
-//    
-//    NSArray *people = [Person MR_executeFetchRequest:peopleRequest];
+
     NSMutableArray *currentArray = [[NSMutableArray alloc]init];
     // 如果数据库中没有借贷信息。
     if (!needSortArray.count) {
@@ -115,25 +128,34 @@ static ZQInformation* zqInfomation;
         
         return;
     }
+    
+#pragma mark - 根据名字来排序并且保存到字典
+    // 获取第一个名字
     NSString *currentName = [(LoanInfo *)[needSortArray firstObject] name];
+    // 将名字保存到名字数组，等读取完成后用来作为key值
     [nameArray addObject:currentName];
     
+    // 遍历从数据库中取到的未按人名排序的数据
     for (LoanInfo *info in needSortArray) {
+        // 如果现在读到的数据的名字与当前名字不相等，那么就保存并封装之前读到的数据
         if (![info.name isEqualToString:currentName]) {
             
             NSDictionary *dic = [[self getLoanMonthlyDictionaryWithArray:currentArray] mutableCopy];
             
+            // 保存当前人的数据
             [self.sortByNameInArray setObject:dic forKey:currentName];
             
+            // 年总应收与总应付
             yearAllShouldGet += [[dic objectForKey:@"allShouldGet"] floatValue];
             yearAllShouldGive += [[dic objectForKey:@"allShouldGive"] floatValue];
 
+            // 清空当前保存当前人数据的数组，将现在读到的名字保存到姓名数组中
             [currentArray removeAllObjects];
             [nameArray addObject:info.name];
             
             currentName = [info.name mutableCopy];
         }
-        
+        // 如果名字与当前名字相等，那么就直接添加到此人的数据数组中
         [currentArray addObject:info];
     }
     // 存入最后一个借贷人数据数组

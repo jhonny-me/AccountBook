@@ -60,8 +60,11 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 - (void) loadZQDetialVCData{
     
     _zqInfo = [ZQInformation Info];
+    // 按年月label显示的年份读取流水数据表
     [_zqInfo loadDataBaseInformationStatisticsWithYear:[_headYearTF.text substringWithRange:NSMakeRange(0, 4)]];
+    // 加载当前月份的字典
     _currentMonthDic = [NSDictionary dictionaryWithDictionary:[_zqInfo.sortByMonthInArray objectForKey:[self getMonthKey]]];
+    // 加载当前月份的数组
     _currentMonthArray = [NSArray arrayWithArray:[_currentMonthDic objectForKey:@"array"]];
 }
 
@@ -81,11 +84,12 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 
 #pragma mark - tableView operation
 
+// 设置tableVIew的行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _currentMonthArray.count;
 }
 
-
+// 设置每一行的显示，此处调用了自定义的cell－－ZQDetailSectionRowCell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -96,12 +100,14 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ZQDetailSectionRowCell" owner:nil options:nil] lastObject];
     }
    
-    
+    // 当前行的数据
     Information *tmpInfo = _currentMonthArray[indexPath.row];
-    
+    // 当前日期
     cell.dateLb.text = [[tmpInfo.date substringWithRange:NSMakeRange(8, 2)] stringByAppendingString:@"号"];
+    // 种类
     cell.categoryLb.text = tmpInfo.category;
     
+    // 根据收入还是支出设置字体颜色并添加符号
     if ([tmpInfo.type isEqualToString:@"支出"]) {
     
         cell.amountLb.textColor = [UIColor colorWithRed:33.0/255 green:146.0/255 blue:23.0/255 alpha:1];
@@ -117,6 +123,7 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
     return cell;
 }
 
+// 选择了某一行之后跳转到详情页面，并且将该行数据传给详情页面
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     Information *info = _currentMonthArray[indexPath.row];
@@ -134,11 +141,13 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
     }
 }
 
+// 设置可滑动编辑
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 
     return YES;
 }
 
+// 点击删除调用的方法
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
 
     Information *info = _currentMonthArray[indexPath.row];
@@ -201,32 +210,18 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 {
     NSLog(@"PickerView - DidSelectRow at %ld, %ld", (long)component, (long)row);
     
-//    NSString *year = [[NSString alloc]init];
-//    NSString *month = [[NSString alloc]init];
-//    if (component ==0) {
-//    
-//        year = yearArray[row];
-//        int index = [pickerView selectedRowInComponent:1];
-//        month = monthArray[index];
-//    }else{
-//    
-//        month = monthArray[row];
-//        int index = [pickerView selectedRowInComponent:0];
-//        year = yearArray[index];
-//    }
-//    
-//    _choosedYearAndMonth = [[year stringByAppendingString:month] mutableCopy];
 }
 
 #pragma mark - TextField Delegate
 
 - (void) returnKey_Pressed:(UIBarButtonItem*)sender{
 
-    
+    // 设置年月标签
     [_headYearTF resignFirstResponder];
     
     NSString *year = [[NSString alloc]init];
     NSString *month = [[NSString alloc]init];
+    
     int index = [_datePicker selectedRowInComponent:0];
     year = yearArray[index];
     index = [_datePicker selectedRowInComponent:1];
@@ -241,6 +236,7 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 
 - (NSString *)getMonthKey{
     
+    // 从当前显示的年月标签中获取月份
     NSString *year = [_headYearTF.text substringWithRange:NSMakeRange(0, 5)];
 //    NSString *monthKey = [[ZQUtils getCurrentYearAndMonth] stringByReplacingOccurrencesOfString:year withString:@""];
     NSString *monthKey = [_headYearTF.text stringByReplacingOccurrencesOfString:year withString:@""];
@@ -267,6 +263,7 @@ NSString *monthArray[] = {@"1月",@"2月",@"3月",@"4月",@"5月",@"6月",@"7月
 
 #pragma mark - Button Events
 
+// 点击左右按钮，年月标签对应改变
 - (IBAction)monthChangeBtn_Pressed:(UIButton*)sender {
     
     NSString *oldMonth = [self getMonthKey];
