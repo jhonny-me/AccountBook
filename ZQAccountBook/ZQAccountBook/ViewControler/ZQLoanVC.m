@@ -78,11 +78,13 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         }
         _numberTF.text = [NSString stringWithFormat:@"%.2f",amount];
         
-        
         _nameTF.text = self.paramsInfo.name;
         _accountTF.text = self.paramsInfo.account;
         _dateTF.text = self.paramsInfo.date;
         _remarkTextView.text = self.paramsInfo.remark;
+        
+        _dateTF.enabled = NO;
+        _dateTF.textColor = [UIColor lightGrayColor];
         
         if (!self.paramsInfo.photo) {
             [_cameraBtn setImage:[UIImage imageNamed:@"camera_btn"] forState:UIControlStateNormal];
