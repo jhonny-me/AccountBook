@@ -400,8 +400,14 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         [_accountTF becomeFirstResponder];
     }else if (sender.tag == 1002){
         
-        //     [_accountTF resignFirstResponder];
-        [_dateTF becomeFirstResponder];
+        //如果是修改则到账户选择过后直接隐藏键盘
+        if(self.paramsInfo){
+            
+            [_accountTF resignFirstResponder];
+        }else{
+            
+            [_dateTF becomeFirstResponder];
+        }
     }else if (sender.tag == 1003){
         
         [_dateTF resignFirstResponder];
@@ -460,7 +466,19 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
     if ([_category isEqualToString:@"还债"] || [_category isEqualToString:@"收债"]) {
         amount = 0.0 - amount;
     }
-    LoanInfo *info = [LoanInfo MR_createEntity];
+    // 判断是新增数据还是修改数据
+    LoanInfo *info;
+    if (self.paramsInfo) {
+        NSString *predicateStr = _dateTF.text;
+        NSPredicate* searchTerm = [NSPredicate predicateWithFormat:@"date == %@",predicateStr];
+        NSArray *findArray =[LoanInfo MR_findAllWithPredicate:(NSPredicate *)searchTerm];
+        info = [findArray firstObject];
+        
+    }else{
+        
+        info = [LoanInfo MR_createEntity];
+    }
+
     info.amount    = [NSNumber numberWithFloat:amount];
     info.photo     = _cameraBtn.imageView.image;
     info.category  = _category;
@@ -476,8 +494,15 @@ NSString *loanAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@"�
         }else{
             if (contextDidSave == YES) {
                 
-                [ZQUtils showAlert:@"保存成功"];
-                [self setEverythingBackToOrignal];
+                if (self.paramsInfo) {
+                    
+                    [ZQUtils showAlert:@"修改成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                
+                    [ZQUtils showAlert:@"保存成功"];
+                    [self setEverythingBackToOrignal];
+                }
             }else{
                 
                 [ZQUtils showAlert:@"保存失败，请重试"];

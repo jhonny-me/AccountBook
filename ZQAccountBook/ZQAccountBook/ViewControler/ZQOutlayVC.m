@@ -352,8 +352,15 @@ NSString *outlayAccounts[] = {@"现金",@"银行卡",@"支付宝",@"信用卡",@
         }else{
             if (contextDidSave == YES) {
                 
-                [ZQUtils showAlert:@"保存成功"];
-                [self setEverythingBackToOrignal];
+                if (self.paramsInfo) {
+                    
+                    [ZQUtils showAlert:@"修改成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    
+                    [ZQUtils showAlert:@"保存成功"];
+                    [self setEverythingBackToOrignal];
+                }
             }else{
                 
                 [ZQUtils showAlert:@"保存失败，请重试"];
