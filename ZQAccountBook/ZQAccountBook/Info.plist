@@ -34,5 +34,11 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>card57.png</string>
+	</array>
+	<key>UILaunchImageFile</key>
+	<string>light</string>
 </dict>
 </plist>
